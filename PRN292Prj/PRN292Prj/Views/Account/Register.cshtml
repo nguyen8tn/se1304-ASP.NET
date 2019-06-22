@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+@model PRN292Prj.Models.User
+<form action="">
+    <h3>Registration Form</h3>
+    <div class="form-wrapper">
+        <input type="text" placeholder="Username" class="form-control">
+        <i class="zmdi zmdi-account"></i>
+    </div>
+    <div class="form-wrapper">
+        <input type="password" placeholder="Password" class="form-control">
+        <i class="zmdi zmdi-lock"></i>
+    </div>
+    <div class="form-wrapper">
+        <input type="password" placeholder="Confirm Password" class="form-control">
+        <i class="zmdi zmdi-lock"></i>
+    </div>
+    <button>
+        Register
+        <i class="zmdi zmdi-arrow-right"></i>
+    </button>
+</form>

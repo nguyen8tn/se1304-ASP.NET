@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\PRN292Prj",
+    "\\PRN292Prj\\Areas\\Admin",
+    "\\PRN292Prj\\Areas\\Admin\\Views",
+    "\\PRN292Prj\\Areas\\Admin\\Views\\Home",
+    "\\PRN292Prj\\Controllers",
+    "\\PRN292Prj\\Data",
+    "\\PRN292Prj\\Models"
+  ],
+  "SelectedNode": "\\PRN292Prj\\Controllers\\UsersController.cs",
+  "PreviewInSolutionExplorer": false
+}

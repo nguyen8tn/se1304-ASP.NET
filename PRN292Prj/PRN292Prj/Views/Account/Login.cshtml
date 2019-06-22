@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+@model PRN292Prj.Models.User
+    <form asp-action="CheckLogin">
+        @Html.AntiForgeryToken()
+        <h3>Login Form</h3>
+        <div class="form-wrapper">
+            <input asp-for="Username" class="form-control" , placeholder="Username" />
+            <i class="zmdi zmdi-account"></i>
+        </div>
+        <font color="red">
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </font>
+        <div class="form-wrapper">
+            <input asp-for="Password" class="form-control" , placeholder="Password" type="password" />
+            <i class="zmdi zmdi-lock"></i>
+        </div>
+        <font color="red">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </font>
+        @if (ViewData["Invalid"] != null)
+        {
+            <div class="form-wrapper">
+                <font color="red">
+                    @ViewData["Invalid"]
+                    <i class="zmdi zmdi-comment-alert"></i>
+                </font>
+            </div>
+        }
+        <button class="submit">
+            Login
+            <i class="zmdi zmdi-arrow-right"></i>
+        </button>
+        <br />
+        <center><a href="@Url.Action("Register")">Register</a></center>
+    </form>
+
+

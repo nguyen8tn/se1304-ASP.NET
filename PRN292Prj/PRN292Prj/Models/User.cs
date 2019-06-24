@@ -59,12 +59,13 @@ namespace PRN292Prj.Models
             set { role = value; }
         }
 
-
+        [EmailAddress]
         public string Email
         {
             get { return email; }
             set { email = value; }
         }
+
         [Required]
         public string Password
         {
@@ -77,6 +78,7 @@ namespace PRN292Prj.Models
             get { return name; }
             set { name = value; }
         }
+
         [Key]
         [Required]
         public string Username

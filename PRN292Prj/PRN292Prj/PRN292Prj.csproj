@@ -2389,6 +2389,17 @@
     <None Include="wwwroot\login\fonts\poppins\Poppins-SemiBold.ttf" />
     <None Include="wwwroot\login\images\bg-registration-form-1.jpg" />
     <None Include="wwwroot\login\images\registration-form-1.jpg" />
+    <None Include="wwwroot\user\fonts\WEB BASED RESULT PUBLICATION SYSTEM FOR EDUCATION BOARDS.pdf" />
+    <None Include="wwwroot\user\icon-fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\user\icon-fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\user\js\bootstrap.min.js" />
+    <None Include="wwwroot\user\js\jquery-3.2.1.min.js" />
+    <None Include="wwwroot\user\js\jquery.nicescroll.min.js" />
+    <None Include="wwwroot\user\js\main.js" />
+    <None Include="wwwroot\user\js\map.js" />
+    <None Include="wwwroot\user\js\mixitup.min.js" />
+    <None Include="wwwroot\user\js\owl.carousel.min.js" />
+    <None Include="wwwroot\user\js\sly.min.js" />
   </ItemGroup>
 
   <ItemGroup>

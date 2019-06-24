@@ -197,5 +197,9 @@ namespace PRN292Prj.Models
             }
             return result;
         }
+        public IActionResult Product()
+        {
+            return View();
+        }
     }
 }

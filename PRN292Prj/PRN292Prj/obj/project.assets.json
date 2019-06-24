@@ -12541,11 +12541,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\c_code\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
+      "projectUniqueName": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
       "projectName": "PRN292Prj",
-      "projectPath": "D:\\c_code\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
+      "projectPath": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
       "packagesPath": "C:\\Users\\dell3458\\.nuget\\packages\\",
-      "outputPath": "D:\\c_code\\PRN292Prj\\PRN292Prj\\obj\\",
+      "outputPath": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

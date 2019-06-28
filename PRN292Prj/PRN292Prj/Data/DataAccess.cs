@@ -19,7 +19,7 @@ namespace PRN292Prj.Data
             Configuration = configuration;
         }
 
-        public string checkLogin(User user)
+        public string CheckLogin(User user)
         {
             string role = "fail";
             string connectionString = Configuration.GetConnectionString("PRN292PrjContext");

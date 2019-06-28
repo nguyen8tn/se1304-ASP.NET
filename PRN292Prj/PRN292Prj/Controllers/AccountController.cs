@@ -37,7 +37,7 @@ namespace PRN292Prj.Controllers
                 return View("Login");
             }
             DataAccess dataAccess = new DataAccess(configuration);
-            string role = dataAccess.checkLogin(user);
+            string role = dataAccess.CheckLogin(user);
             ViewData["Username"] = user.Username;
             if (role.Equals("admin"))
             {

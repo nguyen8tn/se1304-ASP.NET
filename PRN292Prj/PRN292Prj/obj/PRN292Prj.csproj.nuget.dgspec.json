@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\FPT\\PRN292\\Project\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj": {}
+    "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj": {}
   },
   "projects": {
-    "D:\\FPT\\PRN292\\Project\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj": {
+    "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\FPT\\PRN292\\Project\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
+        "projectUniqueName": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
         "projectName": "PRN292Prj",
-        "projectPath": "D:\\FPT\\PRN292\\Project\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "D:\\FPT\\PRN292\\Project\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\obj\\",
+        "projectPath": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
+        "packagesPath": "C:\\Users\\dell3458\\.nuget\\packages\\",
+        "outputPath": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dell3458\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

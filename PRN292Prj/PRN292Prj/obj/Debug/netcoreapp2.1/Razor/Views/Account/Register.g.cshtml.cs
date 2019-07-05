@@ -59,7 +59,7 @@ using PRN292Prj.Models;
 #line default
 #line hidden
             BeginContext(128, 641, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7017e3a659234d5bbc8e41207c3c9f91", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "48dff21cfed44a70bdca9c6622a7d630", async() => {
                 BeginContext(144, 618, true);
                 WriteLiteral(@"
     <h3>Registration Form</h3>

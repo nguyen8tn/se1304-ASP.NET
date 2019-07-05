@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.S3.Transfer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +19,9 @@ namespace PRN292Prj.Areas.Admin.Controllers
     [Route(nameof(Admin) + "/[controller]")]
     public class HomeController : Controller
     {
+        //private const string AwsAccessKeyId = "ASIA3VTIDDEVDG4AAOUG";
+        //private const string AwsSecretAccessKey = "oSw8ATyHjOn/XL9XKX7P/Ct3vylQDKZj+aMNkT0B";
+        private const string BucketName = "se1304";
         private readonly IConfiguration configuration;
 
         public HomeController(IConfiguration configuration)
@@ -47,24 +54,31 @@ namespace PRN292Prj.Areas.Admin.Controllers
         }
 
         [Route("Insert")]
-        public async Task<IActionResult> Insert(List<IFormFile> files, Product product)
+        public async Task<IActionResult> Insert(IFormFile files, Product product)
         {
-            long size = files.Sum(f => f.Length);
-            // full path to file in temp location
+            long size = files.Length;
             var filePath = Path.GetTempFileName();
-            foreach (var formFile in files)
+            if (size > 0)
             {
-                if (formFile.Length > 0)
+                using (IAmazonS3 client = new AmazonS3Client(RegionEndpoint.USGovCloudEast1))
                 {
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        await formFile.CopyToAsync(stream);
+                        files.CopyTo(stream);
+                        PutObjectRequest request = new PutObjectRequest
+                        {
+                            InputStream = stream,
+                            Key = files.FileName,
+                            BucketName = BucketName
+                        };
+                        PutObjectResponse response1 = await client.PutObjectAsync(request);
+                        //asas
                     }
                 }
             }
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
-            return Ok(new { count = files.Count, size, filePath });
+            return RedirectToAction("CreateProduct", "Home");
         }
     }
 }

@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "CreateProduct";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-    //IEnumerable<Scale> list = ViewBag.list as IEnumerable<Scale>;
 }
 @model Tuple<Scale, Product>
 
@@ -54,7 +53,7 @@
                             <div class="control-group">
                                 <label class="control-label">Box<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input type="file"asp-for="Item2.Img" />
+                                    <input type="file" name="files"/>
                                 </div>
                             </div>
                             <div class="control-group">

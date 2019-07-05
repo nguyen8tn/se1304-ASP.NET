@@ -22,7 +22,7 @@ namespace PRN292Prj.Data
         public string CheckLogin(User user)
         {
             string role = "fail";
-            string connectionString = Configuration.GetConnectionString("Amazone");
+            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_CheckLogin", conn);
             cmd.Parameters.AddWithValue("@Username", user.Username);
@@ -78,7 +78,7 @@ namespace PRN292Prj.Data
         public List<Scale> GetAllScales()
         {
             List<Scale> list = new List<Scale>();
-            string connectionString = Configuration.GetConnectionString("Amazone");
+            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_GetAllScales", conn);
             cmd.CommandType = CommandType.StoredProcedure;

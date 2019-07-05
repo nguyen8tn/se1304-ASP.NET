@@ -22,12 +22,11 @@ namespace PRN292Prj.Data
         public string CheckLogin(User user)
         {
             string role = "fail";
-            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
+            string connectionString = Configuration.GetConnectionString("Amazone");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_CheckLogin", conn);
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
-
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
@@ -43,13 +42,12 @@ namespace PRN292Prj.Data
             }
             catch (Exception e)
             {
-                //sdfdsfsdff
                 throw new Exception(e.Message);
             }
             return role;
         }
 
-        public bool insertUser(User user)
+        public bool InsertUser(User user)
         {
             bool check = false ;
             string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
@@ -76,6 +74,34 @@ namespace PRN292Prj.Data
                 throw new Exception(e.Message);
             }
             return check;
+        }
+        public List<Scale> GetAllScales()
+        {
+            List<Scale> list = new List<Scale>();
+            string connectionString = Configuration.GetConnectionString("Amazone");
+            SqlConnection conn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("sp_GetAllScales", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        int id = int.Parse(rd["id"].ToString());
+                        string name = rd["name"].ToString();
+                        Scale t = new Scale(id, name);
+                        list.Add(t);
+                    }
+                }
+            }          
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
         }
     }
 }

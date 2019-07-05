@@ -129,3 +129,5 @@ D:\FPT\PRN292\Project\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.1
 D:\FPT\PRN292\Project\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.1\PRN292Prj.dll
 D:\FPT\PRN292\Project\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.1\PRN292Prj.pdb
 D:\FPT\PRN292\Project\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.1\PRN292Prj.csproj.CopyComplete
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\Home\CreateProduct.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.1\Razor\Areas\Admin\Views\_ViewImports.g.cshtml.cs

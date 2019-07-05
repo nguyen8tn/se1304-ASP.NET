@@ -53,5 +53,47 @@ namespace PRN292Prj.Controllers
                 return RedirectToAction("Index", "User");
             }
         }
+
+        public IActionResult addUser(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Register");
+            }
+            else
+            {
+                DataAccess dataAccess = new DataAccess(configuration);
+                List<string> list = dataAccess.getAllUsername();
+                ErrorObject error = new ErrorObject();
+                bool validate = true;
+                foreach (var username in list)
+                {
+                    if (user.Username.Equals(username))
+                    {
+                        validate = false;
+                        error.UserError = "Username already exist\n";
+                    }
+                }
+                if (validate)
+                {
+                    bool check = dataAccess.InsertUser(user);
+                    if (check == false)
+                    {
+                        ViewData["Invalid"] = "Register failed";
+                        return View("Register");
+                    }
+                    else
+                    {
+                        ViewData["Success"] = "Registed success";
+                        return View("Login");
+                    }
+                }
+                else
+                {
+                    ViewData["UsernameInvalid"] = error.UserError;
+                    return View("Register");
+                }
+            }
+        }
     }
 }

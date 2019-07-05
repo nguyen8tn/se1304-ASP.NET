@@ -19,6 +19,24 @@ namespace PRN292Prj.Data
             Configuration = configuration;
         }
 
+        public List<string> getAllUsername()
+        {
+            List<string> list = new List<string>();
+            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
+            SqlConnection conn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("sp_getAllUsername", conn);
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    string username = dr.GetString(dr.GetOrdinal("Username"));
+                    list.Add(username);
+                }
+            }
+            return list;
+        }
         public string CheckLogin(User user)
         {
             string role = "fail";
@@ -49,16 +67,15 @@ namespace PRN292Prj.Data
 
         public bool InsertUser(User user)
         {
-            bool check = false ;
+            DateTime now = DateTime.Now;
+            user.DOC = now;
+            bool check = true;
             string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("sp_insertUser",conn);
-            cmd.Parameters.AddWithValue("@Username",user.Username);
+            SqlCommand cmd = new SqlCommand("sp_insertUser", conn);
+            cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
-            cmd.Parameters.AddWithValue("@Email", user.Email);
-            cmd.Parameters.AddWithValue("@Name", user.Name);
-            cmd.Parameters.AddWithValue("@Gender", user.Gender);
-            cmd.Parameters.AddWithValue("@Role", user.Role);
+            cmd.Parameters.AddWithValue("@Role", "User");
             cmd.Parameters.AddWithValue("@DateOfCreate", user.DOC);
             cmd.CommandType = CommandType.StoredProcedure;
             try
@@ -68,10 +85,10 @@ namespace PRN292Prj.Data
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
-            }catch(Exception e)
+            }
+            catch
             {
                 check = false;
-                throw new Exception(e.Message);
             }
             return check;
         }

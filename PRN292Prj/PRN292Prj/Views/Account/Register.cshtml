@@ -3,20 +3,48 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 @model PRN292Prj.Models.User
-<form action="">
+<form asp-action="addUser">
     <h3>Registration Form</h3>
     <div class="form-wrapper">
-        <input type="text" placeholder="Username" class="form-control">
+        <input asp-for="Username" placeholder="Username" class="form-control">
         <i class="zmdi zmdi-account"></i>
     </div>
+    <font color="red">
+        <span asp-validation-for="Username" class="text-danger"></span>
+        @if (ViewData["UsernameInvalid"] != null)
+        {
+            @ViewData["UsernameInvalid"]
+            <i class="zmdi zmdi-comment-alert"></i>
+        }
+    </font>
     <div class="form-wrapper">
-        <input type="password" placeholder="Password" class="form-control">
+        <input asp-for="Password" type="Password" placeholder="Password" class="form-control">
         <i class="zmdi zmdi-lock"></i>
     </div>
+    <font color="red">
+        <span asp-validation-for="Password" class="text-danger"></span>
+        @if (ViewData["PasswordInvalid"] != null)
+        {
+            @ViewData["PasswordInvalid"]
+            <i class="zmdi zmdi-comment-alert"></i>
+        }
+    </font>
     <div class="form-wrapper">
-        <input type="password" placeholder="Confirm Password" class="form-control">
+        <input asp-for="Password" type="password" placeholder="Confirm Password" class="form-control">
         <i class="zmdi zmdi-lock"></i>
     </div>
+    <font color="red">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </font>
+    @if (ViewData["Invalid"] != null)
+    {
+        <div class="form-wrapper">
+            <font color="red">
+                @ViewData["Invalid"]
+                <i class="zmdi zmdi-comment-alert"></i>
+            </font>
+        </div>
+    }
     <button>
         Register
         <i class="zmdi zmdi-arrow-right"></i>

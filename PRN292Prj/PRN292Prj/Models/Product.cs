@@ -64,7 +64,7 @@ namespace PRN292Prj.Models
             set { description = value; }
         }
 
-        [RegularExpression(@"^\d+\.\d{0,2}$")]
+        //[RegularExpression(@"^\d+\.\d{0,2}$")]
         [Required(ErrorMessage = "Price is required")]
         [DataType(DataType.Currency, ErrorMessage = "Price must be a number")]
         public double Price

@@ -39,7 +39,7 @@ namespace PRN292Prj.Data
             return uri;
 
         }
-        public string getSAS()
+        public string GetSAS()
         {
             string SAS;
             try
@@ -62,6 +62,25 @@ namespace PRN292Prj.Data
                 throw;
             }
             return SAS;
+        }
+        public bool DeleteBlob(string url)
+        {
+            bool check;
+            try
+            {
+                string conn = Configuration.GetValue<string>("AzureStorage:ConnectionString");
+                string containerName = Configuration.GetValue<string>("AzureStorage:Container");
+                CloudStorageAccount account = CloudStorageAccount.Parse(conn);
+                CloudBlobClient client = account.CreateCloudBlobClient();
+                CloudBlobContainer container = client.GetContainerReference(containerName);
+                container.GetBlobReference(url).DeleteIfExistsAsync();
+                check = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return check;
         }
     }
 }

@@ -146,12 +146,14 @@ namespace PRN292Prj.Data
                     var rd = cmd.ExecuteReader();
                     while (rd.Read())
                     {
+                        int id = int.Parse(rd["id"].ToString());
                         string name = rd["PName"].ToString();
                         double price = Double.Parse(rd["price"].ToString());
                         string img = rd["img"].ToString();
                         string scale = rd["SName"].ToString();
                         Product product = new Product
                         {
+                            ID = id,
                             Name = name,
                             Price = price,
                             Img = img,
@@ -202,6 +204,50 @@ namespace PRN292Prj.Data
                 throw;
             }
             return list;
+        }
+        public bool DeleteProduct(string id)
+        {
+            bool check = false;
+            string constr = Configuration.GetConnectionString("PRN292PrjContext");
+            SqlConnection conn = new SqlConnection(constr);
+            SqlCommand cmd = new SqlCommand("sp_DeleteProduct", conn);
+            cmd.Parameters.AddWithValue("@id", int.Parse(id));
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    check = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return check;
+        }
+        public bool DeleteUser(string id)
+        {
+            bool check = false;
+            string constr = Configuration.GetConnectionString("PRN292PrjContext");
+            SqlConnection conn = new SqlConnection(constr);
+            SqlCommand cmd = new SqlCommand("sp_DeleteUser", conn);
+            cmd.Parameters.AddWithValue("@id", int.Parse(id));
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    check = cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return check;
         }
     }
 }

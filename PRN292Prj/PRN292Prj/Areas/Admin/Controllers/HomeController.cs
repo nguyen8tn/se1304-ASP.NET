@@ -48,25 +48,33 @@ namespace PRN292Prj.Areas.Admin.Controllers
         }
 
         [Route("Insert")]
-        public IActionResult Insert(IFormFile files, Product product)
+        public IActionResult Insert(List<IFormFile> files, Product product)
         {
-            long size = files.Length;
+            long size = files.Count();
             bool checkFile = false;
             var filePath = Path.GetTempFileName();
             if (size > 0)
             {
-                checkFile = files.ContentType.Contains("ima");
+                checkFile = files[0].ContentType.Contains("ima");
+            }
+            var name = from t in _context.Product where t.Name == product.Name select t.Name;
+            if (name.Equals(product.Name))
+            {
+                Console.Write(name);
+                TempData["InsertP"] = "Cannot Create Product!-This Name is exsited!";
+                return View("CreateProduct");
             }
             if (!ModelState.IsValid || !checkFile)
             {
                 AddToComboBox();
+                TempData["InsertP"] = "Cannot Create Product!";
                 ViewData["ERROR"] = "Select Box(1-Img File Only)!";
                 return View("CreateProduct");
             }
             var stream = new FileStream(filePath, FileMode.Open);
-            files.CopyTo(stream);
+            files[0].CopyTo(stream);
             stream.Position = 0;
-            string extension = Path.GetExtension(files.FileName); 
+            string extension = Path.GetExtension(files[0].FileName); 
             string fileName = (product.Name + extension);
             AzureCloud cloud = new AzureCloud(configuration);
             DataAccess dataAccess = new DataAccess(configuration);
@@ -78,13 +86,10 @@ namespace PRN292Prj.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-                if (e.Message.Contains("dup"))
-                {
-                    ViewData["ERROR"] = "Cannot Create Product!-This Name is exsited!";
-                }
-                else ViewData["ERROR"] = "Cannot Create Product!";
+                TempData["DeleteP"] = "Cannot Create Product!";
                 return View("CreateProduct");
             }
+            TempData["InsertS"] = "Create Product Success";
             return RedirectToAction("CreateProduct", "Home");
         }
 
@@ -98,7 +103,7 @@ namespace PRN292Prj.Areas.Admin.Controllers
                 List<Product> list = data.GetAllProduct();
                 foreach (var item in list)
                 {
-                    item.Img += cloud.getSAS();
+                    item.Img += cloud.GetSAS();
                 }
                 ViewBag.PList = list;
             }
@@ -112,6 +117,33 @@ namespace PRN292Prj.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return View();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+        }
+
+        [Route("Delete")]
+        public IActionResult Delete(string id, string model, string img) 
+        {
+            DataAccess data = new DataAccess(configuration);
+            AzureCloud cloud = new AzureCloud(configuration);
+            try
+            {
+                if (model.Equals("user"))
+                {
+                    data.DeleteUser(id);
+                }
+                else if (model.Equals("product"))
+                {
+                    cloud.DeleteBlob(img);
+                    data.DeleteProduct(id);
+                }
+                TempData["DeleteS"] = "Delete Success";
+                return RedirectToAction("Table", "Home", new { id = "product" });
+            }
+            catch (Exception)
+            {
+                TempData["DeleteF"] = "Delete Fail";
+                return RedirectToAction("Table", "Home", new { id = "product"});
+            }
+               
         }
         private void AddToComboBox()
         {

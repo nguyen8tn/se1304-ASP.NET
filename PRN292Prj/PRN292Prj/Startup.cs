@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -34,8 +35,9 @@ namespace PRN292Prj
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddDbContext<PRN292PrjContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PRN292PrjContext")));
         }
@@ -56,6 +58,7 @@ namespace PRN292Prj
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

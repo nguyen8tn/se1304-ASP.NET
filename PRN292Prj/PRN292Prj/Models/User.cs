@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PRN292Prj.Models
 {
+    [Table("tbl_User")]
     public class User
     {
         [Key]

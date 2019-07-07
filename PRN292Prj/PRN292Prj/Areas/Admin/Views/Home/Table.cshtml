@@ -1,0 +1,99 @@
+﻿@model IEnumerable<PRN292Prj.Models.User>
+
+@{
+    ViewData["Title"] = "Table";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+    <div class="span9" id="content">
+        @if (ViewBag.UList != null)
+        {
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">Striped Table</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Created Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (User user in ViewBag.UList)
+                                    {
+                                    <tr>
+                                        <td>@{i++;}@i</td>
+                                        <td>@user.Username</td>
+                                        <td>@user.Name</td>
+                                        <td>@user.Gender</td>
+                                        <td>@user.DOC</td>
+                                        <td>
+                                            <a asp-action="Update" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Detail</a> |
+                                            <a asp-action="Delete" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Delete</a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        }
+        @if (ViewBag.PList != null)
+        {
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">Product</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Img</th>
+                                        <th>Scale</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (Product product in ViewBag.PList)
+                                    {
+                                    <tr>
+                                        <td>@{i++;}@i</td>
+                                        <td>@product.Name</td>
+                                        <td>@product.Price</td>
+                                        <td><img src="@Url.Content(@product.Img)" height="200" width="200" /></td>
+                                        <td>@product.Scale</td>
+                                        <td>
+                                            <a asp-action="Update" asp-controller="Home" asp-route-model="user" asp-route-id="@product.ID">Detail</a> |
+                                            <a asp-action="Delete" asp-controller="Home" asp-route-model="user" asp-route-id="@product.ID">Delete</a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        }
+
+    </div>

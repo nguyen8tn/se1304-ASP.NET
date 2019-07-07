@@ -66,11 +66,11 @@ namespace PRN292Prj.Data
                 if (conn.State == ConnectionState.Closed)
                 {
                     conn.Open();
-                    cmd.ExecuteNonQuery();
                 }
-            }catch(Exception e)
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
             {
-                check = false;
                 throw new Exception(e.Message);
             }
             return check;
@@ -97,6 +97,106 @@ namespace PRN292Prj.Data
                     }
                 }
             }          
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public bool InsertProduct(Product product)
+        {
+            bool check = false;
+            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("sp_InsertProduct", connection);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Img", product.Img);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Des", product.Description);
+            cmd.Parameters.AddWithValue("@Scale_ID", product.Scale);
+            cmd.Parameters.AddWithValue("@Release", product.Release);
+            cmd.Parameters.AddWithValue("@Created", DateTime.Now);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                cmd.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return check;
+        }
+        public List<Product> GetAllProduct()
+        {
+            List<Product> list = new List<Product>();
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_GetAllProduct", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        string name = rd["PName"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        string img = rd["img"].ToString();
+                        string scale = rd["SName"].ToString();
+                        Product product = new Product
+                        {
+                            Name = name,
+                            Price = price,
+                            Img = img,
+                            Scale = scale
+                        };
+                        list.Add(product);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public List<User> GetAllUser()
+        {
+            List<User> list = new List<User>();
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_GetAllUser", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        string username = rd["username"].ToString();
+                        string name = rd["name"].ToString();
+                        bool gender = (bool)rd["gender"];
+                        DateTime date = Convert.ToDateTime(rd["dateofcreate"]);
+                        User user = new User
+                        {
+                            Username = username,
+                            Name = name,
+                            Gender = gender,
+                            DOC = date
+                        };
+                        list.Add(user);
+                    }
+                }
+            }
             catch (Exception)
             {
                 throw;

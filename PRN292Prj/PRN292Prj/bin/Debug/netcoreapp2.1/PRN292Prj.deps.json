@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "412246d54a952b8f4cbcecc4b6aeccb54068e77f"
+    "signature": "7538b47e82be62a00d54dea30c20a3ca04596117"
   },
   "compilationOptions": {
     "defines": [
@@ -24,42 +24,18 @@
     ".NETCoreApp,Version=v2.1": {
       "PRN292Prj/1.0.0": {
         "dependencies": {
-          "AWSSDK.S3": "3.3.103",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
+          "Microsoft.AspNetCore.Session": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.9"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.1.9",
+          "WindowsAzure.Storage": "9.3.3"
         },
         "runtime": {
           "PRN292Prj.dll": {}
         },
         "compile": {
           "PRN292Prj.dll": {}
-        }
-      },
-      "AWSSDK.Core/3.3.103.7": {
-        "runtime": {
-          "lib/netstandard2.0/AWSSDK.Core.dll": {
-            "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.103.7"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/AWSSDK.Core.dll": {}
-        }
-      },
-      "AWSSDK.S3/3.3.103": {
-        "dependencies": {
-          "AWSSDK.Core": "3.3.103.7"
-        },
-        "runtime": {
-          "lib/netstandard2.0/AWSSDK.S3.dll": {
-            "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.3.103.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/AWSSDK.S3.dll": {}
         }
       },
       "Microsoft.AspNetCore.Razor.Design/2.1.2": {},
@@ -538,6 +514,21 @@
           "System.Runtime.Extensions": "4.3.0",
           "System.Threading": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
+        }
+      },
+      "WindowsAzure.Storage/9.3.3": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {
+            "assemblyVersion": "9.3.2.0",
+            "fileVersion": "9.3.2.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.6": {
@@ -3488,20 +3479,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.3.103.7": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-BuEdOT5pSL0XFP7WEIFN5LqW6HeedyMf5RKvh9oGlwqcBbtC3af+dkCRr28vP+5dVxS0S1XkcbBIi0mCrjb03w==",
-      "path": "awssdk.core/3.3.103.7",
-      "hashPath": "awssdk.core.3.3.103.7.nupkg.sha512"
-    },
-    "AWSSDK.S3/3.3.103": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-0lb2l5woA1zDPdOpDsa2lL7TvYwb/h8lsheYY/BJNT0qKMWp4ne/to7Oq2O6H7o4ONzHvqN7Q1pikJqbR7uH9Q==",
-      "path": "awssdk.s3/3.3.103",
-      "hashPath": "awssdk.s3.3.3.103.nupkg.sha512"
-    },
     "Microsoft.AspNetCore.Razor.Design/2.1.2": {
       "type": "package",
       "serviceable": true,
@@ -3683,6 +3660,13 @@
       "sha512": "sha512-td7x21K8LalpjTWCzW/nQboQIFbq9i0r+PCyBBCdLWWnm4NBcdN18vpz/G9hCpUaCIfRL+ZxJNVTywlNlB1aLQ==",
       "path": "system.linq.parallel/4.3.0",
       "hashPath": "system.linq.parallel.4.3.0.nupkg.sha512"
+    },
+    "WindowsAzure.Storage/9.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VUV8j6dzkU/7vDgk5k+ob5g7nnch2fNByr0p9aOxMGFGk+tAnTehrZ4qnClF04CVozP1GNN2zrnbsxCmr+iZBg==",
+      "path": "windowsazure.storage/9.3.3",
+      "hashPath": "windowsazure.storage.9.3.3.nupkg.sha512"
     },
     "Microsoft.AspNet.WebApi.Client/5.2.6": {
       "type": "package",

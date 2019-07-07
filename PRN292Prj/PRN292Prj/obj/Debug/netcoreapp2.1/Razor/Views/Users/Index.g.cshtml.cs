@@ -64,7 +64,7 @@ using PRN292Prj.Models;
             WriteLiteral("\r\n<!DOCTYPE html>\r\n<html lang=\"zxx\">\r\n");
             EndContext();
             BeginContext(132, 1072, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1636199ab43041c1abd446a71592e7a0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b4a8bcd3a72b42c0a7ccaff04ba59202", async() => {
                 BeginContext(138, 1059, true);
                 WriteLiteral(@"
     <title>The Plaza - eCommerce Template</title>
@@ -107,7 +107,7 @@ using PRN292Prj.Models;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(1206, 22678, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "7b4c4fcc577741aa9c0960bfe7de3042", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ef27e652c1564c5cb24a41ceabf0f3ea", async() => {
                 BeginContext(1212, 22665, true);
                 WriteLiteral(@"
     <!-- Page Preloder -->

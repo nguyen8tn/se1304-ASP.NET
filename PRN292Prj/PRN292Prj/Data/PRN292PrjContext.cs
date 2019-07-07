@@ -14,7 +14,8 @@ namespace PRN292Prj.Models
 
         }
 
-        public DbSet<PRN292Prj.Models.User> User { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Product> Product { get; set; }
 
     }
 }

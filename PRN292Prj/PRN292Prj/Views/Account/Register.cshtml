@@ -3,8 +3,8 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 @model PRN292Prj.Models.User
-<form asp-action="addUser">
-    <h3>Registration Form</h3>
+<form asp-action="AddUser">
+    <h3>Registration Form</h3
     <div class="form-wrapper">
         <input asp-for="Username" placeholder="Username" class="form-control">
         <i class="zmdi zmdi-account"></i>
@@ -30,7 +30,7 @@
         }
     </font>
     <div class="form-wrapper">
-        <input asp-for="Password" type="password" placeholder="Confirm Password" class="form-control">
+        <input name="confirm" type="password" placeholder="Confirm Password" class="form-control">
         <i class="zmdi zmdi-lock"></i>
     </div>
     <font color="red">

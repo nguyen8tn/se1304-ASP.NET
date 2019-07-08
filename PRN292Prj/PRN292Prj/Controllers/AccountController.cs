@@ -12,10 +12,12 @@ namespace PRN292Prj.Controllers
     public class AccountController : Controller
     {
         private readonly IConfiguration configuration;
+        private readonly PRN292PrjContext _context;
 
-        public AccountController(IConfiguration configuration)
+        public AccountController(IConfiguration configuration, PRN292PrjContext context)
         {
             this.configuration = configuration;
+            _context = context;
         }
         public IActionResult Register()
         {
@@ -54,7 +56,7 @@ namespace PRN292Prj.Controllers
             }
         }
 
-        public IActionResult addUser(User user)
+        public IActionResult addUser(User user, string confirm)
         {
             if (!ModelState.IsValid)
             {
@@ -63,36 +65,29 @@ namespace PRN292Prj.Controllers
             else
             {
                 DataAccess dataAccess = new DataAccess(configuration);
-                List<string> list = dataAccess.getAllUsername();
-                ErrorObject error = new ErrorObject();
-                bool validate = true;
-                foreach (var username in list)
+                var name = from t in _context.User where t.Username == user.Username select t.Name;
+                if (name.Equals(user.Username))
                 {
-                    if (user.Username.Equals(username))
-                    {
-                        validate = false;
-                        error.UserError = "Username already exist\n";
-                    }
+                    TempData["Register"] = "This Username is existed";
+                    return View("Register");
                 }
-                if (validate)
+
+                bool check = dataAccess.InsertUser(user);
+                if (check == false)
                 {
-                    bool check = dataAccess.InsertUser(user);
-                    if (check == false)
-                    {
-                        ViewData["Invalid"] = "Register failed";
-                        return View("Register");
-                    }
-                    else
-                    {
-                        ViewData["Success"] = "Registed success";
-                        return View("Login");
-                    }
+                    ViewData["Invalid"] = "Register failed";
+                    return View("Register");
                 }
                 else
                 {
-                    ViewData["UsernameInvalid"] = error.UserError;
-                    return View("Register");
+                    ViewData["Success"] = "Registed success";
+                    return View("Login");
                 }
+                //else
+                //{
+                //    ViewData["UsernameInvalid"] = error.UserError;
+                //    return View("Register");
+                //}
             }
         }
     }

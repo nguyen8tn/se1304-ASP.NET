@@ -44,3 +44,4 @@ D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292P
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.pdb
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.csproj.CopyComplete
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\Table.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.csprojAssemblyReference.cache

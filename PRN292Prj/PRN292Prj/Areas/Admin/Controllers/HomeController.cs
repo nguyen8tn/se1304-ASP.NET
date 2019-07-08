@@ -84,7 +84,7 @@ namespace PRN292Prj.Areas.Admin.Controllers
                 product.Img = uri;
                 dataAccess.InsertProduct(product);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 TempData["DeleteP"] = "Cannot Create Product!";
                 return View("CreateProduct");

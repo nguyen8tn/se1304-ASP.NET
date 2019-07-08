@@ -51,10 +51,10 @@ namespace PRN292Prj.Data
                 CloudBlobContainer container = client.GetContainerReference(containerName);
                 SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy
                 {
-                    Permissions = SharedAccessBlobPermissions.Read,
+                    //set delete-(read-only),... token
+                    Permissions = SharedAccessBlobPermissions.Read | SharedAccessBlobPermissions.Delete,
                     SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(45),
                 };
-
                 SAS = container.GetSharedAccessSignature(policy);
             }
             catch (Exception)
@@ -68,14 +68,10 @@ namespace PRN292Prj.Data
             bool check;
             try
             {
-                string conn = Configuration.GetValue<string>("AzureStorage:ConnectionString");
-                string containerName = Configuration.GetValue<string>("AzureStorage:Container");
-                CloudStorageAccount account = CloudStorageAccount.Parse(conn);
-                CloudBlobClient client = account.CreateCloudBlobClient();
-                CloudBlobContainer container = client.GetContainerReference(containerName);
-                CloudBlob blob = container.GetBlobReference(url);
-                blob.DeleteIfExistsAsync();
-                check = true;
+                Uri uri = new Uri(url);
+                CloudBlockBlob blob = new CloudBlockBlob(uri);
+                blob.DeleteAsync();
+                check = blob.IsDeleted;
             }
             catch (Exception)
             {

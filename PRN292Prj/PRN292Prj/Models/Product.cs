@@ -31,6 +31,7 @@ namespace PRN292Prj.Models
             this.description = description;
             this.scale = scale;
             this.release = release;
+            PriceEF = (decimal)price;
         }
 
         [Column("created_date")]
@@ -42,6 +43,7 @@ namespace PRN292Prj.Models
 
         [Required(ErrorMessage = "Release is required")]
         [DataType(DataType.Date)]
+        [Column("release_date")]
         public  DateTime Release
         {
             get { return release; }
@@ -49,6 +51,7 @@ namespace PRN292Prj.Models
         }
 
         [Required(ErrorMessage = "Select Scale!")]
+        [NotMapped]
         public string Scale
         {
             get { return scale; }
@@ -65,8 +68,8 @@ namespace PRN292Prj.Models
         }
 
         //[RegularExpression(@"^\d+\.\d{0,2}$")]
-        [Required(ErrorMessage = "Price is required")]
-        [DataType(DataType.Currency, ErrorMessage = "Price must be a number")]
+
+        [NotMapped]
         public double Price
         {
             get { return price; }
@@ -87,12 +90,18 @@ namespace PRN292Prj.Models
             set { name = value; }
         }
 
-
         public int ID
         {
             get { return id; }
             set { id = value; }
         }
-
+        [Column("price")]
+        [Required(ErrorMessage = "Price is required")]
+        [DataType(DataType.Currency, ErrorMessage = "Price must be a number")]
+        public decimal PriceEF
+        {
+            get { return (decimal)price; }
+            set { price =(double)value; }
+        }
     }
 }

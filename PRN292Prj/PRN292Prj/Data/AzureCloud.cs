@@ -73,7 +73,8 @@ namespace PRN292Prj.Data
                 CloudStorageAccount account = CloudStorageAccount.Parse(conn);
                 CloudBlobClient client = account.CreateCloudBlobClient();
                 CloudBlobContainer container = client.GetContainerReference(containerName);
-                container.GetBlobReference(url).DeleteIfExistsAsync();
+                CloudBlob blob = container.GetBlobReference(url);
+                blob.DeleteIfExistsAsync();
                 check = true;
             }
             catch (Exception)

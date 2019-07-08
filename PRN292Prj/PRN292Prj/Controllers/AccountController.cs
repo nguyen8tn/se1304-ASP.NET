@@ -71,7 +71,6 @@ namespace PRN292Prj.Controllers
                     TempData["Register"] = "This Username is existed";
                     return View("Register");
                 }
-
                 bool check = dataAccess.InsertUser(user);
                 if (check == false)
                 {

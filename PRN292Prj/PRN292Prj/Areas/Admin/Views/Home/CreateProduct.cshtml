@@ -24,21 +24,21 @@
                 <div class="alert alert-success">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h4>Success</h4>
-                    <br/>
-                    @TempData["InsertS"]
+                    <br />
+                    <h4>@TempData["InsertS"]</h4>
                 </div>
             </div>
         }
     }
     @{
-        if (TempData["InsertP"] != null)
+        if (TempData["InsertF"] != null)
         {
             <div class="row-fluid">
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h4>Fail</h4>
-                    <br/>
-                    @TempData["InsertP"]
+                    <br />
+                    <h4>@TempData["InsertF"]</h4>
                 </div>
             </div>
         }
@@ -77,7 +77,7 @@
                                 <div class="controls">
                                     <input type="text" asp-for="Price" data-required="1" class="span6 m-wrap" />
                                     <font color="red">
-                                        <span asp-validation-for="Price"></span>
+                                        <span asp-validation-for="PriceEF"></span>
                                     </font>
                                 </div>
                             </div>

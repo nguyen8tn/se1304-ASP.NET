@@ -57,7 +57,6 @@ namespace PRN292Prj
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
             app.UseSession();
 
             app.UseMvc(routes =>
@@ -74,6 +73,7 @@ namespace PRN292Prj
                   areaName: "Admin",
                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseCookiePolicy();
         }
     }
 }

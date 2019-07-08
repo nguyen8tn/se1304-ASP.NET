@@ -29,6 +29,15 @@
                 </font>
             </div>
         }
+        @if (ViewData["Success"] != null)
+        {
+            <div class="form-wrapper">
+                <font color="blue">
+                    @ViewData["Success"]
+                    <i class="zmdi zmdi-comment-alert"></i>
+                </font>
+            </div>
+        }
         <button class="submit">
             Login
             <i class="zmdi zmdi-arrow-right"></i>

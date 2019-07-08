@@ -12974,23 +12974,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\dell3458\\.nuget\\packages\\": {},
+    "C:\\Users\\USER\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
+      "projectUniqueName": "D:\\Games\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
       "projectName": "PRN292Prj",
-      "projectPath": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
-      "packagesPath": "C:\\Users\\dell3458\\.nuget\\packages\\",
-      "outputPath": "D:\\Github_res\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\obj\\",
+      "projectPath": "D:\\Games\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\PRN292Prj.csproj",
+      "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+      "outputPath": "D:\\Games\\se1304-ASP.NET\\PRN292Prj\\PRN292Prj\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\dell3458\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

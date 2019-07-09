@@ -249,5 +249,116 @@ namespace PRN292Prj.Data
             }
             return check;
         }
+
+        public Product SearchByPrimarykey(int id)
+        {
+            Product product = null;
+            string connStr = Configuration.GetConnectionString("Text");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_SearchByPrimarykey", conn);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        string name = rd["name"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        string img = rd["img"].ToString();
+                        string description = rd["description"].ToString();
+                        string scale = rd["scale_id"].ToString();
+                        DateTime release = DateTime.Parse(rd["release_date"].ToString());
+                        product = new Product
+                        {
+                            ID = id,
+                            Name = name,
+                            Price = price,
+                            Description = description,
+                            Img = img,
+                            Scale = scale,
+                            Release = release
+                        };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return product;
+        }
+
+        public bool UpdateProduct(Product product)
+        {
+            bool check = false;
+            string connectionString = Configuration.GetConnectionString("Text");
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand("sp_UpdateProduct", connection);
+            cmd.Parameters.AddWithValue("@id", product.ID);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Img", product.Img);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Des", product.Description);
+            cmd.Parameters.AddWithValue("@Scale_ID", product.Scale);
+            cmd.Parameters.AddWithValue("@Release", product.Release);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                cmd.ExecuteReader();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return check;
+        }
+
+        public List<Product> SearchProductByName(string search)
+        {
+            List<Product> list = new List<Product>();
+            string connStr = Configuration.GetConnectionString("Text");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_SearchProduct", conn);
+            cmd.Parameters.AddWithValue("@Name", search);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        int id = int.Parse(rd["id"].ToString());
+                        string name = rd["PName"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        string img = rd["img"].ToString();
+                        string scale = rd["SName"].ToString();
+                        Product product = new Product
+                        {
+                            ID = id,
+                            Name = name,
+                            Price = price,
+                            Img = img,
+                            Scale = scale
+                        };
+                        list.Add(product);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
     }
 }

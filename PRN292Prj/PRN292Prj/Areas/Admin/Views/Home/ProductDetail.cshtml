@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "ProductDetail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@model Product
+<script>
+    function previewFile() {
+        var preview = document.querySelector('img');
+        var file = document.querySelector('input[type=file]').files[0];
+        var reader = new FileReader();
+        reader.addEventListener("load", function () {
+            preview.src = reader.result;
+        }, false);
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+<div class="span9" id="content">
+    @{
+        if (TempData["UpdateS"] != null)
+        {
+            <div class="row-fluid">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Success</h4>
+                    <br />
+                    <h4>@TempData["UpdateS"]</h4>
+                </div>
+            </div>
+        }
+    }
+    @{
+        if (TempData["UpdateF"] != null)
+        {
+            <div class="row-fluid">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Fail</h4>
+                    <br />
+                    <h4>@TempData["UpdateF"]</h4>
+                </div>
+            </div>
+        }
+    }
+    <div class="row-fluid">
+        <!-- block -->
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">Form Example</div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <form asp-action="Update" asp-controller="Home" class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <fieldset>
+                            <legend>Product Form</legend>
+                            <div class="control-group">
+                                <label class="control-label">Name<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="hidden" asp-for="ID" value="@Html.Raw(@Model.ID)" data-required="1" class="span6 m-wrap" />
+                                    <input type="text" asp-for="Name" value="@Html.Raw(@Model.Name)" data-required="1" class="span6 m-wrap" />
+                                    <font color="red">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Description<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="text" asp-for="Description" value="@Html.Raw(@Model.Description)" data-required="1" class="span6 m-wrap" />
+                                    <font color="red">
+                                        <span asp-validation-for="Description"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Price<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="text" asp-for="Price" value="@Html.Raw(@Model.Price)" data-required="1" class="span6 m-wrap" />
+                                    <font color="red">
+                                        <span asp-validation-for="PriceEF"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Release<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="date" asp-for="Release" value="@Html.Raw(@Model.Release)" data-required="1" class="span6 m-wrap" />
+                                    <font color="red">
+                                        <span asp-validation-for="Release"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Scale<span class="required">*</span></label>
+                                <div class="controls">
+                                    <select class="span6 m-wrap" asp-for="Scale" asp-items="@ViewBag.list" >
+                                        <option value="">Select...</option>
+                                    </select>
+                                    <font color="red">
+                                        <span asp-validation-for="Scale"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Box<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="file" name="files" onchange="previewFile()" />
+                                    <br />
+                                    <img src="@Url.Content(@Html.Raw(@Model.Img).ToString())" height="200" alt="Image preview...">
+                                    <br />
+                                    <font color="red">
+                                        @ViewData["ERROR"]
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="reset" class="btn">Cancel</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /block -->
+    </div>
+</div>
+

@@ -32,6 +32,19 @@
             </div>
         }
     }
+    <form asp-action="SearchProduct" asp-controller="Home" class="form-horizontal" enctype="multipart/form-data" method="post">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">Name<span class="required">*</span></label>
+                <div class="controls">
+                    <input type="text" name="search" data-required="1" class="span6 m-wrap" />
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
     @if (ViewBag.UList != null)
     {
         <div class="row-fluid">
@@ -108,7 +121,7 @@
                                         <td><img src="@Url.Content(@product.Img)" height="200" width="200" /></td>
                                         <td>@product.Scale</td>
                                         <td>
-                                            <a asp-action="Update" asp-controller="Home" asp-route-model="product" asp-route-id="@product.ID">Detail</a> |
+                                            <a asp-action="ProductDetail" asp-controller="Home" asp-route-model="product" asp-route-id="@product.ID">Detail</a> |
                                             <a asp-action="Delete" asp-controller="Home" asp-route-model="product" asp-route-img="@product.Img" asp-route-id="@product.ID">Delete</a>
                                         </td>
                                     </tr>

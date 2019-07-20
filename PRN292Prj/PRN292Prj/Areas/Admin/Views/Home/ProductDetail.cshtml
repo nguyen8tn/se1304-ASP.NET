@@ -85,16 +85,25 @@
                             <div class="control-group">
                                 <label class="control-label">Release<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input type="date" asp-for="Release" value="@Html.Raw(@Model.Release)" data-required="1" class="span6 m-wrap" />
+                                    @Html.EditorFor(t => t.Release, new { htmlAttributes = new { @class = "span6 m-wrapl" } })
                                     <font color="red">
                                         <span asp-validation-for="Release"></span>
                                     </font>
                                 </div>
                             </div>
                             <div class="control-group">
+                                <label class="control-label">Quantity<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="text" asp-for="Quantity" data-required="1" class="span6 m-wrap" />
+                                    <font color="red">
+                                        <span asp-validation-for="Quantity"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
                                 <label class="control-label">Scale<span class="required">*</span></label>
                                 <div class="controls">
-                                    <select class="span6 m-wrap" asp-for="Scale" asp-items="@ViewBag.list" >
+                                    <select class="span6 m-wrap" asp-for="Scale" asp-items="@ViewBag.list">
                                         <option value="">Select...</option>
                                     </select>
                                     <font color="red">

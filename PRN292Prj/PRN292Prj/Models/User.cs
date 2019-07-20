@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,7 +17,7 @@ namespace PRN292Prj.Models
         private string password;
         private string email;
         private string role;
-        private bool? gender;
+        private bool gender;
         private DateTime? Doc;
 
         public User()
@@ -48,7 +49,7 @@ namespace PRN292Prj.Models
             set { Doc = value; }
         }
 
-        public bool? Gender
+        public bool Gender
         {
             get { return gender; }
             set { gender = value; }
@@ -80,8 +81,8 @@ namespace PRN292Prj.Models
             set { name = value; }
         }
 
-        [Key]
         [Required]
+        [Key]
         public string Username
         {
             get { return username; }

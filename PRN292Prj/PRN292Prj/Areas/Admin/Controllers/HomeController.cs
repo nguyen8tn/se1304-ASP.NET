@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using PRN292Prj.Data;
 using PRN292Prj.Models;
 
@@ -15,6 +14,7 @@ namespace PRN292Prj.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
     [Route(nameof(Admin) + "/[controller]")]
+    [Authorize(Roles = "admin")]
     public class HomeController : Controller
     {
         private readonly IConfiguration configuration;
@@ -29,14 +29,21 @@ namespace PRN292Prj.Areas.Admin.Controllers
         [Route("Index")]
         public IActionResult Index()
         {
-            var listProduct = (from t in _context.Product select new Product { Name = t.Name, Price = Convert.ToDouble(t.Price), Created = t.Created }).Take(5);
-            var listUser = (from t in _context.User select new User { Username = t.Username, Name = t.Name, DOC = t.DOC }).Take(5);
+            var listProduct = (from t in _context.Product orderby t.Created descending select new Product { Name = t.Name, Price = Convert.ToDouble(t.Price), Created = t.Created }).Take(3);
+            var listUser = (from t in _context.User orderby t.DOC descending select new User { Username = t.Username, Name = t.Name, DOC = t.DOC }).Take(3);
+            var listOrder = (from t in _context.Order orderby t.DOC descending select new Order { Username = t.Username, ID = t.ID, DOC = t.DOC }).Take(3);
+            //---------
             var totalU = _context.User.Count();
             var totalP = _context.Product.Count();
+            var totalO = _context.Order.Count();
+            //---------------- get number record
             ViewBag.TotalU = totalU;
             ViewBag.TotalP = totalP;
+            ViewBag.TotalO = totalO;
+            //----------- get top 3
             ViewBag.Products = listProduct;
             ViewBag.Users = listUser;
+            ViewBag.Orders = listOrder;
             return View();
         }
 
@@ -55,7 +62,7 @@ namespace PRN292Prj.Areas.Admin.Controllers
             Product product = dataAccess.SearchByPrimarykey(id);
             product.Img += cloud.GetSAS();
             AddToComboBox(product.Scale);
-            return View(product);
+            return View("ProductDetail", product);
         }
         [Route("Insert")]
         public IActionResult Insert(List<IFormFile> files, Product product)
@@ -105,11 +112,12 @@ namespace PRN292Prj.Areas.Admin.Controllers
         [Route("Table")]
         public IActionResult Table(string id)
         {
-
             DataAccess data = new DataAccess(configuration);
             AzureCloud cloud = new AzureCloud(configuration);
+            ViewBag.table = id;
             if (id.Equals("product"))
             {
+                TempData["id"] = "product";
                 List<Product> list = data.GetAllProduct();
                 foreach (var item in list)
                 {
@@ -118,11 +126,17 @@ namespace PRN292Prj.Areas.Admin.Controllers
                 }
                 ViewBag.PList = list;
             }
-            else if (id.Equals("User"))
+            else if (id.Equals("user"))
             {
+                TempData["id"] = "user";
                 List<User> list = data.GetAllUser();
                 ViewBag.UList = list;
-
+            }
+            else if (id.Equals("order"))
+            {
+                TempData["id"] = "order";
+                List<Order> list = data.GetAllOrder();
+                ViewBag.OList = list;
             }
             else
             {
@@ -202,23 +216,31 @@ namespace PRN292Prj.Areas.Admin.Controllers
             return RedirectToAction("Table", "Home", new { id = "product" });
         }
 
-        [Route("SearchProduct")]
+        [Route("Search")]
 
-        public IActionResult SearchProduct(string search)
+        public IActionResult Search(string search, string id)
         {
-            if(search == null)
+            if (search == null)
             {
                 search = "";
             }
+            TempData["id"] = id;
             DataAccess data = new DataAccess(configuration);
             AzureCloud cloud = new AzureCloud(configuration);
-            List<Product> list = data.SearchProductByName(search);
-            foreach (var item in list)
+            if (id.Equals("product"))
             {
-                //img = (img + token)
-                item.Img += cloud.GetSAS();
+                List<Product> list = data.SearchProductByName(search);
+                foreach (var item in list)
+                {
+                    //img = (img + token)
+                    item.Img += cloud.GetSAS();
+                }
+                ViewBag.PList = list;
+            } else
+            {
+                List<User> list = data.SearchUserByName(search);
+                ViewBag.UList = list;
             }
-            ViewBag.PList = list;
             return View("Table");
         }
         private void AddToComboBox(string scaleID)
@@ -226,7 +248,7 @@ namespace PRN292Prj.Areas.Admin.Controllers
             DataAccess dataAccess = new DataAccess(configuration);
             List<Scale> list = dataAccess.GetAllScales();
             List<SelectListItem> item = new List<SelectListItem>();
-            
+
             foreach (var i in list)
             {
                 SelectListItem t = new SelectListItem();
@@ -240,6 +262,21 @@ namespace PRN292Prj.Areas.Admin.Controllers
             }
             ViewBag.list = item;
         }
-
+        public IActionResult Profile()
+        {
+            string username = HttpContext.Session.GetString("name");
+            var profile = _context.User.FirstOrDefault(t => t.Username == username);
+            return View(profile);
+        }
+        [Route("OrderDetail")]
+        public IActionResult OrderDetail(string id)
+        {
+            DataAccess data = new DataAccess(configuration);
+            List<OrderDetails> orders = data.GetAllOrderDetails(id);
+            ViewBag.OList = orders;
+            OrderDetails order = new OrderDetails();
+            order.ID = id;
+            return View(order);
+        }
     }
 }

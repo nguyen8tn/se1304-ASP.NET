@@ -1,35 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PRN292Prj.Data;
 
 namespace PRN292Prj.Models
 {
     public class UsersController : Controller
     {
+        private readonly IConfiguration configuration;
         private readonly PRN292PrjContext _context;
 
-        public UsersController(PRN292PrjContext context)
+        public UsersController(IConfiguration configuration, PRN292PrjContext context)
         {
+            this.configuration = configuration;
             _context = context;
         }
-        enum Validate
+        public IActionResult Index()
         {
-            SUCCESS  = 1, INVALID = 2, ERROR = 3
+            DataAccess data = new DataAccess(configuration);
+            AzureCloud cloud = new AzureCloud(configuration);
+            List<UserIndexPage> list = data.SearchProductNewArrival();
+            foreach (UserIndexPage item in list)
+            {
+                item.Img += cloud.GetSAS();
+            }
+            ViewBag.PList = list;
+            UserIndexPage uIP = new UserIndexPage();
+            //null ref
+            uIP.ListScale = new List<SelectListItem>();
+            AddToComboBox(uIP,"");
+            return View(uIP);
         }
-        // GET: Users
-        public async Task<IActionResult> Index()
+        public IActionResult BestSeller(UserIndexPage model)
         {
-            return View(await _context.User.ToListAsync());
+            if (model.Search == null)
+            {
+                model.Search = "";
+            }
+            if (model.Scale == null)
+            {
+                model.Scale = "";
+            }
+            UserIndexPage uIP = new UserIndexPage
+            {
+                Search = model.Search,
+                ListScale = new List<SelectListItem>()
+            };
+            AddToComboBox(uIP, model.Scale);
+            DataAccess data = new DataAccess(configuration);
+            AzureCloud cloud = new AzureCloud(configuration);
+            List<UserIndexPage> list = data.SearchProductBestSale();
+            foreach (UserIndexPage item in list)
+            {
+                item.Img += cloud.GetSAS();
+            }
+            ViewBag.PList = list;
+            return View("Index", uIP);
         }
-
+        public IActionResult ViewDetails(string id)
+        {
+            DataAccess data = new DataAccess(configuration);
+            AzureCloud cloud = new AzureCloud(configuration);
+            Product p = data.GetProductDetails(id);
+            p.Img += cloud.GetSAS();
+            return View("Product",p);
+        }
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> ViewsDetails(string id)
         {
+            DataAccess data = new DataAccess(configuration);
+            AzureCloud cloud = new AzureCloud(configuration);
             if (id == null)
             {
                 return NotFound();
@@ -164,7 +209,8 @@ namespace PRN292Prj.Models
             else if (role.Equals("admin"))
             {
                 return RedirectToAction("Index", "Home", new { area = "Admin" });
-            } else
+            }
+            else
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -200,6 +246,52 @@ namespace PRN292Prj.Models
         public IActionResult Product()
         {
             return View();
+        }
+        public IActionResult Search(UserIndexPage model)
+        {
+            if (model.Search == null)
+            {
+                model.Search = "";
+            }
+            if (model.Scale == null)
+            {
+                model.Scale = "";
+            }
+            DataAccess data = new DataAccess(configuration);
+            AzureCloud cloud = new AzureCloud(configuration);
+            List <UserIndexPage> list = data.SearchProductByUser(model.Search, model.Scale);
+            foreach (var item in list)
+            {
+                item.Img += cloud.GetSAS();
+            }
+            UserIndexPage uIP = new UserIndexPage();
+            uIP.Search = model.Search;
+            uIP.ListScale = new List<SelectListItem>();
+            AddToComboBox(uIP, model.Scale);
+            if (list.Count == 0)
+            {
+                ViewBag.PList = null;
+            }
+            else {ViewBag.PList = list; }
+            return View(uIP);
+        }
+        private void AddToComboBox(UserIndexPage uIP, string scaleID)
+        {
+            DataAccess dataAccess = new DataAccess(configuration);
+            List<Scale> list = dataAccess.GetAllScales();
+            foreach (var i in list)
+            {
+                SelectListItem t = new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.ID.ToString()
+                };
+                if (i.ID.ToString().Equals(scaleID))
+                {
+                    t.Selected = true;
+                }
+                uIP.ListScale.Add(t);
+            }
         }
     }
 }

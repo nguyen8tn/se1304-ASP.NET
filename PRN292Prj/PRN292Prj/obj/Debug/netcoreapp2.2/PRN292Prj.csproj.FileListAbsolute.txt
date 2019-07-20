@@ -17,8 +17,6 @@ D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\A
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\Index.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Shared\_AdminLayout.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\_ViewImports.g.cshtml.cs
-D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
-D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Account\Register.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Home\About.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Home\Contact.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.g.cshtml.cs
@@ -33,7 +31,6 @@ D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\V
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Delete.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Details.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Edit.g.cshtml.cs
-D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Index.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Product.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\_ViewImports.g.cshtml.cs
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\_ViewStart.g.cshtml.cs
@@ -44,7 +41,6 @@ D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292P
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.pdb
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.csproj.CopyComplete
 D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\Table.g.cshtml.cs
-D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.csprojAssemblyReference.cache
 C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\bin\Debug\netcoreapp2.2\PRN292Prj.deps.json
 C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\bin\Debug\netcoreapp2.2\PRN292Prj.runtimeconfig.json
 C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\bin\Debug\netcoreapp2.2\PRN292Prj.runtimeconfig.dev.json
@@ -93,3 +89,13 @@ C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netco
 C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.pdb
 C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.csproj.CopyComplete
 C:\Users\USER\Downloads\Music\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\ProductDetail.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_FooterUser.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\ProductDetail.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_LoginPartial.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Account\Login.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Account\Register.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Index.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\Profile.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Views\Users\Search.g.cshtml.cs
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\PRN292Prj.csprojAssemblyReference.cache
+D:\Github_res\se1304-ASP.NET\PRN292Prj\PRN292Prj\obj\Debug\netcoreapp2.2\Razor\Areas\Admin\Views\Home\OrderDetail.g.cshtml.cs

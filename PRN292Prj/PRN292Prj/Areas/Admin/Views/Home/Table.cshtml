@@ -5,134 +5,187 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="span9" id="content">
-    @{
-        if (TempData["DeleteS"] != null)
-        {
-            <div class="row-fluid">
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h4>Success</h4>
-                    <br />
-                    <h4>@TempData["DeleteS"]</h4>
-                </div>
-            </div>
-        }
-    }
-    @{
-        if (TempData["DeleteF"] != null)
-        {
-            <div class="row-fluid">
-                <div class="alert alert-error">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <h4>Fail</h4>
-                    <br />
-                    <h4>@TempData["DeleteF"]</h4>
-                </div>
-            </div>
-        }
-    }
-    <form asp-action="SearchProduct" asp-controller="Home" class="form-horizontal" enctype="multipart/form-data" method="post">
-        <fieldset>
-            <div class="control-group">
-                <label class="control-label">Name<span class="required">*</span></label>
-                <div class="controls">
-                    <input type="text" name="search" data-required="1" class="span6 m-wrap" />
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-    @if (ViewBag.UList != null)
-    {
-        <div class="row-fluid">
-            <!-- block -->
-            <div class="block">
-                <div class="navbar navbar-inner block-header">
-                    <div class="muted pull-left">Striped Table</div>
-                </div>
-                <div class="block-content collapse in">
-                    <div class="span12">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Username</th>
-                                    <th>Name</th>
-                                    <th>Gender</th>
-                                    <th>Created Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{ int i = 0;}
-                                @foreach (User user in ViewBag.UList)
-                                {
-                                    <tr>
-                                        <td>@{i++;}@i</td>
-                                        <td>@user.Username</td>
-                                        <td>@user.Name</td>
-                                        <td>@user.Gender</td>
-                                        <td>@user.DOC</td>
-                                        <td>
-                                            <a asp-action="Update" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Detail</a> |
-                                            <a asp-action="Delete" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Delete</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+    <div class="span9" id="content">
+        @{
+            if (TempData["DeleteS"] != null)
+            {
+                <div class="row-fluid">
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4>Success</h4>
+                        <br />
+                        <h4>@TempData["DeleteS"]</h4>
                     </div>
                 </div>
-            </div>
-            <!-- /block -->
-        </div>
-    }
-    @if (ViewBag.PList != null)
-    {
-        <div class="row-fluid">
-            <!-- block -->
-            <div class="block">
-                <div class="navbar navbar-inner block-header">
-                    <div class="muted pull-left">Product</div>
-                </div>
-                <div class="block-content collapse in">
-                    <div class="span12">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Img</th>
-                                    <th>Scale</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{ int i = 0;}
-                                @foreach (Product product in ViewBag.PList)
-                                {
-                                    <tr>
-                                        <td>@{i++;}@i</td>
-                                        <td>@product.Name</td>
-                                        <td>@product.Price</td>
-                                        <td><img src="@Url.Content(@product.Img)" height="200" width="200" /></td>
-                                        <td>@product.Scale</td>
-                                        <td>
-                                            <a asp-action="ProductDetail" asp-controller="Home" asp-route-model="product" asp-route-id="@product.ID">Detail</a> |
-                                            <a asp-action="Delete" asp-controller="Home" asp-route-model="product" asp-route-img="@product.Img" asp-route-id="@product.ID">Delete</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+            }
+        }
+        @{
+            if (TempData["DeleteF"] != null)
+            {
+                <div class="row-fluid">
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4>Fail</h4>
+                        <br />
+                        <h4>@TempData["DeleteF"]</h4>
                     </div>
                 </div>
+            }
+        }
+        <form asp-action="Search" asp-controller="Home" class="form-horizontal">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label">Name</label>
+                    <div class="controls">
+                        <input type="text" name="search" data-required="1" class="span6 m-wrap" />
+                    </div>
+                    <input type="hidden" value="@TempData["id"]" name="id" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        @if (ViewBag.UList != null)
+        {
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">User</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Username</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Created Date</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (User user in ViewBag.UList)
+                                    {
+                                        <tr>
+                                            <td>@{i++;}@i</td>
+                                            <td>@user.Username</td>
+                                            <td>@user.Name</td>
+                                            @if (@user.Gender)
+                                            {
+                                                <td> Male </td>
+                                            }
+                                            else
+                                            {
+                                                <td> Female </td>
+                                            }
+                                            <td>@user.DOC</td>
+                                            <td>@user.Email</td>
+                                            <td>@user.Role</td>
+                                            <td>
+                                                <a asp-action="Update" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Detail</a> |
+                                                <a asp-action="Delete" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
             </div>
-            <!-- /block -->
-        </div>
-    }
+        }
+        @if (ViewBag.PList != null)
+        {
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">Product</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Img</th>
+                                        <th>Scale</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (Product product in ViewBag.PList)
+                                    {
+                                        <tr>
+                                            <td>@{i++;}@i</td>
+                                            <td>@product.Name</td>
+                                            <td>@product.Price</td>
+                                            <td><img src="@Url.Content(@product.Img)" height="200" width="200" /></td>
+                                            <td>@product.Scale</td>
+                                            <td>
+                                                <a asp-action="ProductDetail" asp-controller="Home" asp-route-model="product" asp-route-id="@product.ID">Detail</a> |
+                                                <a asp-action="Delete" asp-controller="Home" asp-route-model="product" asp-route-img="@product.Img" asp-route-id="@product.ID">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        }
+        @if (ViewBag.OList != null)
+        {
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">Order</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 0;}
+                                    @foreach (Order order in ViewBag.OList)
+                                    {
+                                        <tr>
+                                            <td>@{i++;}@i</td>
+                                            <td>@order.ID</td>
+                                            <td>@order.Username</td>
+                                            <td>@order.DOC</td>
+                                            <td>
+                                                <a asp-action="OrderDetail" asp-controller="Home" asp-route-model="order" asp-route-id="@order.ID">Detail</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        }
 
-</div>
+    </div>

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using PRN292Prj.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace PRN292Prj.Data
     {
 
         public IConfiguration Configuration { get; private set; }
-
         public DataAccess(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,7 +21,7 @@ namespace PRN292Prj.Data
         public string CheckLogin(User user)
         {
             string role = "fail";
-            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
+            string connectionString = Configuration.GetConnectionString("Local");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_CheckLogin", conn);
             cmd.Parameters.AddWithValue("@Username", user.Username);
@@ -46,14 +45,13 @@ namespace PRN292Prj.Data
             }
             return role;
         }
-
         public bool InsertUser(User user)
         {
-            bool check = false ;
+            bool check = false;
             string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("sp_insertUser",conn);
-            cmd.Parameters.AddWithValue("@Username",user.Username);
+            SqlCommand cmd = new SqlCommand("sp_insertUser", conn);
+            cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
             cmd.Parameters.AddWithValue("@Email", user.Email);
             cmd.Parameters.AddWithValue("@Name", user.Name);
@@ -69,7 +67,7 @@ namespace PRN292Prj.Data
                 }
                 cmd.ExecuteNonQuery();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -96,7 +94,7 @@ namespace PRN292Prj.Data
                         list.Add(t);
                     }
                 }
-            }          
+            }
             catch (Exception)
             {
                 throw;
@@ -134,7 +132,7 @@ namespace PRN292Prj.Data
         public List<Product> GetAllProduct()
         {
             List<Product> list = new List<Product>();
-            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
+            string connStr = Configuration.GetConnectionString("Local");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetAllProduct", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -169,10 +167,77 @@ namespace PRN292Prj.Data
             }
             return list;
         }
+        public List<Order> GetAllOrder()
+        {
+            List<Order> list = new List<Order>();
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_GetAllOrder", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        int id = int.Parse(rd["id"].ToString());
+                        string username = rd["username"].ToString();
+                        DateTime date = DateTime.Parse(rd["created_date"].ToString());
+                        Order order = new Order
+                        {
+                            ID = id,
+                            Username = username,
+                            DOC = date
+                        };
+                        list.Add(order);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public List<OrderDetails> GetAllOrderDetails(string order_id)
+        {
+            List<OrderDetails> list = new List<OrderDetails>();
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_GetAllOrderDetail", conn);
+            cmd.Parameters.AddWithValue("@order_id", order_id);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        string name = rd["name"].ToString();
+                        int quantity = int.Parse(rd["quantity"].ToString());
+                        OrderDetails order = new OrderDetails
+                        {
+                            Product_ID = name,
+                            Quantity = quantity
+                        };
+                        list.Add(order);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
         public List<User> GetAllUser()
         {
             List<User> list = new List<User>();
-            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
+            string connStr = Configuration.GetConnectionString("Local");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetAllUser", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -186,12 +251,16 @@ namespace PRN292Prj.Data
                     {
                         string username = rd["username"].ToString();
                         string name = rd["name"].ToString();
+                        string email = rd["email"].ToString();
+                        string role = rd["role"].ToString();
                         bool gender = (bool)rd["gender"];
                         DateTime date = Convert.ToDateTime(rd["dateofcreate"]);
                         User user = new User
                         {
                             Username = username,
                             Name = name,
+                            Email = email,
+                            Role = role,
                             Gender = gender,
                             DOC = date
                         };
@@ -249,11 +318,10 @@ namespace PRN292Prj.Data
             }
             return check;
         }
-
         public Product SearchByPrimarykey(int id)
         {
             Product product = null;
-            string connStr = Configuration.GetConnectionString("Text");
+            string connStr = Configuration.GetConnectionString("Local");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchByPrimarykey", conn);
             cmd.Parameters.AddWithValue("@id", id);
@@ -269,6 +337,7 @@ namespace PRN292Prj.Data
                         string name = rd["name"].ToString();
                         double price = Double.Parse(rd["price"].ToString());
                         string img = rd["img"].ToString();
+                        int quantity = int.Parse(rd["quantity"].ToString());
                         string description = rd["description"].ToString();
                         string scale = rd["scale_id"].ToString();
                         DateTime release = DateTime.Parse(rd["release_date"].ToString());
@@ -291,11 +360,10 @@ namespace PRN292Prj.Data
             }
             return product;
         }
-
         public bool UpdateProduct(Product product)
         {
             bool check = false;
-            string connectionString = Configuration.GetConnectionString("Text");
+            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_UpdateProduct", connection);
             cmd.Parameters.AddWithValue("@id", product.ID);
@@ -320,11 +388,10 @@ namespace PRN292Prj.Data
             }
             return check;
         }
-
         public List<Product> SearchProductByName(string search)
         {
             List<Product> list = new List<Product>();
-            string connStr = Configuration.GetConnectionString("Text");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchProduct", conn);
             cmd.Parameters.AddWithValue("@Name", search);
@@ -359,6 +426,211 @@ namespace PRN292Prj.Data
                 throw;
             }
             return list;
+        }
+        public List<UserIndexPage> SearchProductByUser(string search, string scale_id)
+        {
+            List<UserIndexPage> list = new List<UserIndexPage>();
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_SearchProductByUser", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@Name", search);
+            cmd.Parameters.AddWithValue("@Scale", scale_id);
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        int id = int.Parse(rd["id"].ToString());
+                        string name = rd["name"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        int remain = int.Parse(rd["remain"].ToString());
+                        string img = rd["img"].ToString();
+                        string scale = rd["scale"].ToString();
+                        UserIndexPage product = new UserIndexPage
+                        {
+                            ID = id,
+                            Name = name,
+                            Price = price,
+                            Img = img,
+                            Remain = remain,
+                            Scale = scale
+                        };
+                        list.Add(product);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public List<User> SearchUserByName(string search)
+        {
+            List<User> list = new List<User>();
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_SearchUser", conn);
+            cmd.Parameters.AddWithValue("@Name", search);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        string username = rd["username"].ToString();
+                        string name = rd["name"].ToString();
+                        string email = rd["email"].ToString();
+                        string role = rd["role"].ToString();
+                        bool gender = (bool)rd["gender"];
+                        DateTime date = Convert.ToDateTime(rd["dateofcreate"]);
+                        User user = new User
+                        {
+                            Username = username,
+                            Name = name,
+                            Email = email,
+                            Role = role,
+                            Gender = gender,
+                            DOC = date
+                        };
+                        list.Add(user);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public List<UserIndexPage> SearchProductNewArrival()
+        {
+            List<UserIndexPage> list = new List<UserIndexPage>();
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_SearchProductNewArrival", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        int id = int.Parse(rd["id"].ToString());
+                        string name = rd["name"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        int remain = int.Parse(rd["remain"].ToString());
+                        string img = rd["img"].ToString();
+                        string scale = rd["scale"].ToString();
+                        UserIndexPage product = new UserIndexPage
+                        {
+                            ID = id,
+                            Name = name,
+                            Price = price,
+                            Img = img,
+                            Remain = remain,
+                            Scale = scale
+                        };
+                        list.Add(product);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public List<UserIndexPage> SearchProductBestSale()
+        {
+            List<UserIndexPage> list = new List<UserIndexPage>();
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_SearchProductBestSale", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        int id = int.Parse(rd["id"].ToString());
+                        string name = rd["name"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        int remain = int.Parse(rd["remain"].ToString());
+                        string img = rd["img"].ToString();
+                        string scale = rd["scale"].ToString();
+                        UserIndexPage product = new UserIndexPage
+                        {
+                            ID = id,
+                            Name = name,
+                            Price = price,
+                            Img = img,
+                            Remain = remain,
+                            Scale = scale
+                        };
+                        list.Add(product);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+        }
+        public Product GetProductDetails(string id)
+        {
+            Product p = null;
+            string connStr = Configuration.GetConnectionString("Local");
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand cmd = new SqlCommand("sp_GetProductDetails", conn);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                    var rd = cmd.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        string name = rd["name"].ToString();
+                        string scale = rd["scale"].ToString();
+                        string description = rd["description"].ToString();
+                        double price = Double.Parse(rd["price"].ToString());
+                        int remain = int.Parse(rd["remain"].ToString());
+                        string img = rd["img"].ToString();
+                        DateTime date = DateTime.Parse(rd["release_date"].ToString());
+                        p = new Product
+                        {
+                            ID = int.Parse(id),
+                            Name = name,
+                            Scale = scale,
+                            Price = price,
+                            Img = img,
+                            Release = date,
+                            Quantity = remain
+                        };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return p;
         }
     }
 }

@@ -12,6 +12,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using PRN292Prj.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace PRN292Prj
 {
@@ -30,16 +36,32 @@ namespace PRN292Prj
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDistributedMemoryCache();
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                // Set session timeout value
+                options.IdleTimeout = TimeSpan.FromSeconds(30);
+                options.Cookie.HttpOnly = true;
+            });
+            services.AddMemoryCache();
             services.AddDbContext<PRN292PrjContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PRN292PrjContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("Local")));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    options => {
+                        options.LoginPath = "/Account/Login";
+                        options.LogoutPath = "/Account/Login";
+                        options.AccessDeniedPath = "/Users/Index";
+                    }
+                );
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,18 +76,19 @@ namespace PRN292Prj
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseSession();
+            app.UseAuthentication();
+            app.UseHttpsRedirection();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Account}/{action=Login}/{id?}");
+                    template: "{controller=Users}/{action=Index}/{id?}");
             });
-
             app.UseMvc(routes =>
             {
                 routes.MapAreaRoute(
@@ -74,6 +97,7 @@ namespace PRN292Prj
                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
             app.UseCookiePolicy();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

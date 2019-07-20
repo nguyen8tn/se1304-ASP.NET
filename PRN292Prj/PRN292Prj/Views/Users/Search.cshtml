@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+@model UserIndexPage
+<section class="product-section spad">
+    <div class="container">
+        <div class="row" id="product-filter">
+            @{
+                if (ViewBag.PList == null)
+                {
+                    <h2>Not Found!</h2>
+                }
+                else
+                {
+                    foreach (UserIndexPage item in ViewBag.PList)
+                    {
+                        <div class="mix col-lg-3 col-md-6 new">
+                            <div class="product-item">
+                                <figure>
+                                    <img src="@Url.Content(item.Img)" width="262" height="363" alt="">
+                                    <div class="pi-meta">
+                                        <div class="pi-m-left">
+                                            <img src="~/user/img/icons/eye.png" alt="">
+                                            <p><a asp-action="ViewDetails" asp-controller="Users" asp-route-id="@item.ID">Details</a></p>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <div class="product-info">
+                                    <h6>@item.Name (@item.Scale)</h6>
+                                    <p>@item.Price$</p>
+                                    <a href="#" class="site-btn btn-line">ADD TO CART</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</section>
+

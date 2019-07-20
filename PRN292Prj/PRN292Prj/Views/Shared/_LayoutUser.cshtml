@@ -1,7 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@model UserIndexPage
+<!DOCTYPE html>
 <html lang="zxx">
 <head>
-    <title>The Plaza - eCommerce Template</title>
+    <title>Mobile Suit Gundam-機動戦士ガンダム</title>
     <meta charset="UTF-8">
     <meta name="description" content="The Plaza eCommerce Template">
     <meta name="keywords" content="plaza, eCommerce, creative, html">
@@ -29,45 +31,51 @@
 <body>
     <!-- Page Preloder -->
     <div id="preloder">
-        <div class="loader"></div>
+        <div class="loader">
+        </div>
     </div>
-
     <!-- Header section -->
     <header class="header-section header-normal">
         <div class="container-fluid">
             <!-- logo -->
             <div class="site-logo">
-                <img src="~/user/img/logo.png" alt="logo">
+                <a asp-action="Index"><img src="~/user/img/logo.png" alt="logo"></a>
             </div>
             <!-- responsive -->
             <div class="nav-switch">
                 <i class="fa fa-bars"></i>
             </div>
             <div class="header-right">
+                @if (@Context.Session.GetString("name") != null)
+                {
+                    <a asp-action="Profile" asp-controller="Users"><h4>Profile | </h4></a>
+                    <a asp-action="Logout" asp-controller="Account"><h4>Logout</h4></a>
+                }
+                else
+                {<a asp-action="Login" asp-controller="Account"><h4>Login</h4></a>}
                 <a href="cart.html" class="card-bag"><img src="~/user/img/icons/bag.png" alt=""><span>2</span></a>
-                <a href="#" class="search"><img src="~/user/img/icons/search.png" alt=""></a>
             </div>
-            <!-- site menu -->
-            <ul class="main-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Woman</a></li>
-                <li><a href="#">Man</a></li>
-                <li><a href="#">LookBook</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
         </div>
     </header>
     <!-- Header section end -->
     <!-- Page Info -->
     <div class="page-info-section page-info">
         <div class="container">
-            <div class="site-breadcrumb">
-                <a href="">Home</a> /
-                <a href="">Sales</a> /
-                <a href="">Bags</a> /
-                <span>Shoulder bag</span>
-            </div>
+            <form asp-action="Search">
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="text" class="span6 m-wrap" asp-for="Search" value="@Html.Raw(Model.Search)" />
+                    </div>
+                    <div class="controls">
+                        <select class="span6 m-wrap" asp-for="Scale" asp-items="@Model.ListScale">
+                            <option value="">Select...</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
             <img src="~/user/img/page-info-art.png" alt="" class="page-info-art">
         </div>
     </div>

@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@using Microsoft.AspNetCore.Http
+@model User
+<div class="span9" id="content">
+    @{
+        if (TempData["UpdateS"] != null)
+        {
+            <div class="row-fluid">
+                <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Success</h4>
+                    <br />
+                    <h4>@TempData["UpdateS"]</h4>
+                </div>
+            </div>
+        }
+    }
+    @{
+        if (TempData["UpdateS"] != null)
+        {
+            <div class="row-fluid">
+                <div class="alert alert-error">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Fail</h4>
+                    <br />
+                    <h4>@TempData["UpdateS"]</h4>
+                </div>
+            </div>
+        }
+    }
+    <div class="row-fluid">
+        <!-- block -->
+        <div class="block">
+            <div class="navbar navbar-inner block-header">
+                <div class="muted pull-left">Profile</div>
+            </div>
+            <div class="block-content collapse in">
+                <div class="span12">
+                    <form class="form-horizontal" asp-action="UpdateProfile">
+                        <fieldset>
+                            <legend>Profile</legend>
+                            <div class="control-group">
+                                <label class="control-label">Username</label>
+                                <div class="controls">
+                                    <span class="input-xlarge uneditable-input">@Context.Session.GetString("admin")</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="focusedInput">Name</label>
+                                <div class="controls">
+                                    <input class="input-xlarge focused" id="focusedInput" type="text" value="@Html.Raw(Model.Name)" asp-for="Name">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="focusedInput">Email</label>
+                                <div class="controls">
+                                    <input class="input-xlarge focused" id="focusedInput" type="text" value="@Html.Raw(Model.Email)" asp-for="Email">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Created Date</label>
+                                <div class="controls">
+                                    <span class="input-xlarge uneditable-input">@Html.Raw(Model.DOC)</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="focusedInput">Gender</label>
+                                <div class="controls">
+                                    <input class="input-xlarge focused" id="focusedInput" type="checkbox" value="@Html.Raw(Model.Gender)" asp-for="Gender">Male
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!-- /block -->
+    </div>
+</div>
+

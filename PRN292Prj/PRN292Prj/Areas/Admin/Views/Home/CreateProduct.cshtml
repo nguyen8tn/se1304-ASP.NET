@@ -68,7 +68,7 @@
                                 <div class="controls">
                                     <input type="text" asp-for="Description" data-required="1" class="span6 m-wrap" />
                                     <font color="red">
-                                        <span asp-validation-for="Description"></span>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
                                     </font>
                                 </div>
                             </div>
@@ -77,16 +77,25 @@
                                 <div class="controls">
                                     <input type="text" asp-for="Price" data-required="1" class="span6 m-wrap" />
                                     <font color="red">
-                                        <span asp-validation-for="PriceEF"></span>
+                                        <span asp-validation-for="PriceEF" class="text-danger"></span>
                                     </font>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Release<span class="required">*</span></label>
                                 <div class="controls">
-                                    <input type="date" asp-for="Release" data-required="1" class="span6 m-wrap" />
+                                    @Html.EditorFor(t => t.Release, new { htmlAttributes = new { @class = "span6 m-wrapl" } })
                                     <font color="red">
-                                        <span asp-validation-for="Release"></span>
+                                        <span asp-validation-for="Release" class="text-danger"></span>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Quantity<span class="required">*</span></label>
+                                <div class="controls">
+                                    <input type="text" asp-for="Quantity" data-required="1" class="span6 m-wrap" />
+                                    <font color="red">
+                                        <span asp-validation-for="Quantity" class="text-danger"></span>
                                     </font>
                                 </div>
                             </div>
@@ -97,7 +106,7 @@
                                         <option value="">Select...</option>
                                     </select>
                                     <font color="red">
-                                        <span asp-validation-for="Scale"></span>
+                                        <span asp-validation-for="Scale" class="text-danger"></span>
                                     </font>
                                 </div>
                             </div>

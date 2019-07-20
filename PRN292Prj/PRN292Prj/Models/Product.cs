@@ -11,12 +11,13 @@ namespace PRN292Prj.Models
     public class Product
     {
         private int id;
+        private int? quantity;
         private string name;
         private string img;
         private double price;
         private string description;
         private string scale;
-        private DateTime release;
+        private DateTime? release;
         private DateTime created;
 
         public Product()
@@ -24,7 +25,7 @@ namespace PRN292Prj.Models
 
         }
 
-        public Product(string name, double price, string description, string scale, DateTime release)
+        public Product(string name, double price, string description, string scale, DateTime release, int quantity)
         {
             this.name = name;
             this.price = price;
@@ -32,6 +33,7 @@ namespace PRN292Prj.Models
             this.scale = scale;
             this.release = release;
             PriceEF = (decimal)price;
+            this.quantity = quantity;
         }
 
         [Column("created_date")]
@@ -43,8 +45,9 @@ namespace PRN292Prj.Models
 
         [Required(ErrorMessage = "Release is required")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Column("release_date")]
-        public  DateTime Release
+        public  DateTime? Release
         {
             get { return release; }
             set { release = value; }
@@ -95,13 +98,23 @@ namespace PRN292Prj.Models
             get { return id; }
             set { id = value; }
         }
+
         [Column("price")]
         [Required(ErrorMessage = "Price is required")]
-        [DataType(DataType.Currency, ErrorMessage = "Price must be a number")]
+        [Range(1, double.MaxValue, ErrorMessage = "Please enter a positive number")]
         public decimal PriceEF
         {
             get { return (decimal)price; }
             set { price =(double)value; }
+        }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a positive number")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Please enter valid number")]
+        [Required(ErrorMessage = "Quantity is required")]
+        public int? Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
         }
     }
 }

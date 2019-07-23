@@ -99,7 +99,7 @@ namespace PRN292Prj.Controllers
                     else
                     {
                         AddCookieAuth(user, "user");
-                        return RedirectToAction("Index", "User");
+                        return RedirectToAction("Index", "Users");
                     }
                 }
             }

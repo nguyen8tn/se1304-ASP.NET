@@ -60,7 +60,7 @@ namespace PRN292Prj.Data
                 {
                     conn.Open();
                 }
-                check = cmd.ExecuteNonQuery() >0;
+                check = (cmd.ExecuteNonQuery() > 0);
             }
             catch (Exception e)
             {
@@ -272,7 +272,7 @@ namespace PRN292Prj.Data
         }
         public bool DeleteProduct(string id)
         {
-            bool check = false;
+            bool check;
             string constr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(constr);
             SqlCommand cmd = new SqlCommand("sp_DeleteProduct", conn);
@@ -283,8 +283,9 @@ namespace PRN292Prj.Data
                 if (conn.State == ConnectionState.Closed)
                 {
                     conn.Open();
-                    check = cmd.ExecuteNonQuery() > 0;
+                    
                 }
+                check = (cmd.ExecuteNonQuery() > 0);
             }
             catch (Exception)
             {

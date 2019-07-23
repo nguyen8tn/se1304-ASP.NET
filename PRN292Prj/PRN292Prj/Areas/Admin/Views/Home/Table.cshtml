@@ -35,10 +35,26 @@
         <form asp-action="Search" asp-controller="Home" class="form-horizontal">
             <fieldset>
                 <div class="control-group">
-                    <label class="control-label">Name</label>
-                    <div class="controls">
-                        <input type="text" name="search" data-required="1" class="span6 m-wrap" />
-                    </div>
+                    @if (!@TempData["id"].Equals("order"))
+                    {
+                        <label class="control-label">Name</label>
+                        <div class="controls">
+                            <input type="text" name="search" data-required="1" class="span6 m-wrap" />
+                        </div>
+                    }
+                    else
+                    {
+                        <h3>Date</h3>
+                        <label class="control-label">From: </label>
+                        <div class="controls">
+                            <input type="date" name="from" data-required="1" class="span6 m-wrap" />
+                        </div>
+                        <br />                        
+                        <label class="control-label">To: </label>
+                        <div class="controls">
+                            <input type="date" name="to" data-required="1" class="span6 m-wrap" />
+                        </div>
+                    }
                     <input type="hidden" value="@TempData["id"]" name="id" />
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Search</button>
@@ -87,10 +103,6 @@
                                             <td>@user.DOC</td>
                                             <td>@user.Email</td>
                                             <td>@user.Role</td>
-                                            <td>
-                                                <a asp-action="Update" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Detail</a> |
-                                                <a asp-action="Delete" asp-controller="Home" asp-route-model="user" asp-route-id="@user.Username">Delete</a>
-                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -133,8 +145,8 @@
                                             <td><img src="@Url.Content(@product.Img)" height="200" width="200" /></td>
                                             <td>@product.Scale</td>
                                             <td>
-                                                <a asp-action="ProductDetail" asp-controller="Home" asp-route-model="product" asp-route-id="@product.ID">Detail</a> |
-                                                <a asp-action="Delete" asp-controller="Home" asp-route-model="product" asp-route-img="@product.Img" asp-route-id="@product.ID">Delete</a>
+                                                <a asp-action="ProductDetail" asp-controller="Home" asp-route-id="@product.ID">Detail</a> |
+                                                <a asp-action="Delete" asp-controller="Home" asp-route-img="@product.Img" asp-route-id="@product.ID">Delete</a>
                                             </td>
                                         </tr>
                                     }
@@ -175,7 +187,7 @@
                                             <td>@order.Username</td>
                                             <td>@order.DOC</td>
                                             <td>
-                                                <a asp-action="OrderDetail" asp-controller="Home" asp-route-model="order" asp-route-id="@order.ID">Detail</a>
+                                                <a asp-action="OrderDetail" asp-controller="Home" asp-route-id="@order.ID">Detail</a>
                                             </td>
                                         </tr>
                                     }
@@ -187,5 +199,4 @@
                 <!-- /block -->
             </div>
         }
-
     </div>

@@ -5,7 +5,6 @@
 
 }
 @model Product
-
 <div class="page-area product-page spad">
     <div class="container">
         <div class="row">
@@ -30,7 +29,6 @@
                     </div>
                     <p>Release : @Html.DisplayFor(date => date.Release)</p>
                     <p>Remain : @Html.Raw(Model.Quantity)</p>
-                    <a href="#" class="site-btn btn-line">ADD TO CART</a>
                 </div>
             </div>
         </div>

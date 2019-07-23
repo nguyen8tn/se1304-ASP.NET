@@ -61,7 +61,7 @@ namespace PRN292Prj.Models
             set { role = value; }
         }
 
-        [EmailAddress]
+        [EmailAddress(ErrorMessage ="Email is wrong format!")]
         public string Email
         {
             get { return email; }
@@ -75,6 +75,7 @@ namespace PRN292Prj.Models
             set { password = value; }
         }
 
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage ="Alphabet only!")]
         public string Name
         {
             get { return name; }

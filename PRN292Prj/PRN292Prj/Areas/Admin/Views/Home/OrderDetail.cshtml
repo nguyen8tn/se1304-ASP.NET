@@ -10,7 +10,7 @@
             <div class="control-group">
                 <label class="control-label">Order ID<span class="required">*</span></label>
                 <div class="controls">
-                    <input type="text" asp-for="Order_ID" value="@Html.Raw(@Model.Order_ID)" data-required="1" class="span6 m-wrap" readonly/>
+                    <input type="text" value="@ViewData["order_id"]" class="span6 m-wrap" readonly/>
                 </div>
             </div>
             <div class="row-fluid">

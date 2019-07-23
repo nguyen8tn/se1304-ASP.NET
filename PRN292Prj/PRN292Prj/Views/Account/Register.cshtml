@@ -4,7 +4,7 @@
 }
 @model PRN292Prj.Models.User
 <form asp-action="AddUser">
-    <h3>Registration Form</h3
+    <h3>Registration Form</h3>
     <div class="form-wrapper">
         <input asp-for="Username" placeholder="Username" class="form-control">
         <i class="zmdi zmdi-account"></i>
@@ -33,14 +33,11 @@
         <input name="confirm" type="password" placeholder="Confirm Password" class="form-control">
         <i class="zmdi zmdi-lock"></i>
     </div>
-    <font color="red">
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </font>
-    @if (ViewData["Invalid"] != null)
+    @if (ViewData["ConfirmPassInvalid"] != null)
     {
         <div class="form-wrapper">
             <font color="red">
-                @ViewData["Invalid"]
+                @ViewData["ConfirmPassInvalid"]
                 <i class="zmdi zmdi-comment-alert"></i>
             </font>
         </div>

@@ -10,6 +10,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace PRN292Prj.Controllers
 {
@@ -67,41 +68,45 @@ namespace PRN292Prj.Controllers
             }
         }
 
-        public IActionResult addUser(User user, string confirm)
+        public IActionResult AddUser(User user, string confirm)
         {
             if (!ModelState.IsValid)
             {
                 return View("Register");
             }
+            else if (!confirm.Equals(user.Password))
+            {
+                ViewData["ConfirmPassInvalid"] = "Confirm Password does not match Password";
+                return View("Register");
+            }
             else
             {
-                DataAccess dataAccess = new DataAccess(configuration);
-                var name = from t in _context.User where t.Username == user.Username select t.Name;
-                if (name.Equals(user.Username))
+                user.Gender = false;
+                var name = _context.User.FirstOrDefault(t => t.Username.Equals(user.Username));
+                if (name != null)
                 {
-                    TempData["Register"] = "This Username is existed";
+                    ModelState.AddModelError("Username", "This username is existed!");
                     return View("Register");
-                }
-                bool check = dataAccess.InsertUser(user);
-                if (check == false)
+                } else
                 {
-                    ViewData["Invalid"] = "Register failed";
-                    return View("Register");
+                    DataAccess dataAccess = new DataAccess(configuration);
+                    bool check = dataAccess.InsertUser(user);
+                    if (check == false)
+                    {
+                        ModelState.AddModelError("Username", "Register failed");
+                        return View("Register");
+                    }
+                    else
+                    {
+                        AddCookieAuth(user, "user");
+                        return RedirectToAction("Index", "User");
+                    }
                 }
-                else
-                {
-                    ViewData["Success"] = "Registed success";
-                    return View("Login");
-                }
-                //else
-                //{
-                //    ViewData["UsernameInvalid"] = error.UserError;
-                //    return View("Register");
-                //}
             }
         }
         private void AddCookieAuth(User user,string role)
         {
+            HttpContext.Session.SetString("username", user.Username);
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Username));
             identity.AddClaim(new Claim(ClaimTypes.Role, role));

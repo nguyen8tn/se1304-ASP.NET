@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -78,13 +79,19 @@ namespace PRN292Prj.Areas.Admin.Controllers
             AddToComboBox("");
             if (name != null)
             {
-                TempData["InsertF"] = "Cannot Create Product!-This Name is exsited!";
+                TempData["InsertF"] = "Cannot Create Product!";
+                ModelState.AddModelError("Name", "This name is existed!");
                 return View("CreateProduct");
             }
-            if (!ModelState.IsValid || !checkFile)
+            if (!ModelState.IsValid)
             {
                 TempData["InsertF"] = "Cannot Create Product!";
-                ViewData["ERROR"] = "Select Box(1-Img File Only)!";
+                return View("CreateProduct");
+            }
+            if (!checkFile)
+            {
+                TempData["InsertF"] = "Cannot Create Product!";
+                ModelState.AddModelError("Img", "Select Box(1-Img File Only)!");
                 return View("CreateProduct");
             }
             var stream = new FileStream(filePath, FileMode.Open);
@@ -100,9 +107,9 @@ namespace PRN292Prj.Areas.Admin.Controllers
                 product.Img = uri;
                 dataAccess.InsertProduct(product);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                TempData["InsertF"] = "Cannot Create Product!";
+                TempData["InsertF"] = e.Message;
                 return View("CreateProduct");
             }
             TempData["InsertS"] = "Create Product Success";
@@ -173,52 +180,57 @@ namespace PRN292Prj.Areas.Admin.Controllers
         }
 
         [Route("Update")]
-        public IActionResult Update(List<IFormFile> files, Product product)
+        public IActionResult Update(List<IFormFile> files, [Bind("Created,ID,Quantity,Name,Img,Price,Description,Scale,Release")]Product product)
         {
             long size = files.Count();
-            bool checkFile = false;
+            bool checkFile;
             var filePath = Path.GetTempFileName();
             if (size > 0)
             {
                 checkFile = files[0].ContentType.Contains("ima");
+                if (!checkFile)
+                {
+                    TempData["UpdateF"] = "Cannot Update Product!";
+                    ViewData["ERROR"] = "1-Img File Only";
+                    return View("ProductDetail");
+                }
             }
-            var name = _context.Product.FirstOrDefault(t => t.Name.Equals(product.Name));
-            AddToComboBox(product.Scale);
-            if (name != null)
+            else
             {
-                TempData["UpdateF"] = "Cannot Update Product!-This Name is exsited!";
-                return RedirectToAction("ProductDetail", "Home", new { id = product.ID });
+                product.Img = product.Img.Split("?sv=")[0];
             }
-            if (!ModelState.IsValid || !checkFile)
+            if (!ModelState.IsValid)
             {
                 TempData["UpdateF"] = "Cannot Update Product!";
-                ViewData["ERROR"] = "Select Box(1-Img File Only)!";
-                return RedirectToAction("ProductDetail", "Home", new { id = product.ID });
+                return View("ProductDetail");
             }
-            var stream = new FileStream(filePath, FileMode.Open);
-            files[0].CopyTo(stream);
-            stream.Position = 0;
-            string extension = Path.GetExtension(files[0].FileName);
-            string fileName = (product.Name + extension);
             AzureCloud cloud = new AzureCloud(configuration);
             DataAccess dataAccess = new DataAccess(configuration);
             try
             {
-                string uri = cloud.UploadFile(fileName, stream);
-                product.Img = uri;
+                if (size > 0)
+                {
+                    var stream = new FileStream(filePath, FileMode.Open);
+                    files[0].CopyTo(stream);
+                    stream.Position = 0;
+                    string extension = Path.GetExtension(files[0].FileName);
+                    string fileName = (product.Name + extension);
+                    cloud.DeleteBlob(product.Img);
+                    string uri = cloud.UploadFile(fileName, stream);
+                    product.Img = uri;
+                }
                 dataAccess.UpdateProduct(product);
+                TempData["UpdateS"] = "Update Product Success!";
+                return RedirectToAction("ProductDetail", "Home", new { id = product.ID });
             }
             catch (Exception e)
             {
                 TempData["UpdateF"] = "Cannot Update Product!" + e.Message;
-                return RedirectToAction("ProductDetail", "Home", new { id = product.ID });
-            }
-            return RedirectToAction("Table", "Home", new { id = "product" });
+                return View("ProductDetail");
+            }              
         }
-
         [Route("Search")]
-
-        public IActionResult Search(string search, string id)
+        public IActionResult Search(string search, string id, string from, string to)
         {
             if (search == null)
             {
@@ -236,10 +248,36 @@ namespace PRN292Prj.Areas.Admin.Controllers
                     item.Img += cloud.GetSAS();
                 }
                 ViewBag.PList = list;
-            } else
+            }
+            else if (id.Equals("user"))
             {
                 List<User> list = data.SearchUserByName(search);
                 ViewBag.UList = list;
+            }
+            else
+            {
+                List<Order> list = new List<Order>();
+                if (from == null && to == null)
+                {
+                    list = (from t in _context.Order select t).ToList();
+                }
+                else if (to == null)
+                {
+                    list = (from t in _context.Order where t.DOC > DateTime.Parse(@from) select t).ToList();
+                }
+                else if (from == null)
+                {
+                    list = (from t in _context.Order where DateTime.Parse(to) > t.DOC select t).ToList();
+                }
+                else
+                {
+                    list = (from t in _context.Order where DateTime.Parse(to) > t.DOC && t.DOC > DateTime.Parse(@from) select t).ToList();
+                }
+                if (list.Count() == 0)
+                {
+                    list = null;
+                }
+                ViewBag.OList = list;
             }
             return View("Table");
         }
@@ -262,9 +300,10 @@ namespace PRN292Prj.Areas.Admin.Controllers
             }
             ViewBag.list = item;
         }
+        [Route("Profile")]
         public IActionResult Profile()
         {
-            string username = HttpContext.Session.GetString("name");
+            string username = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var profile = _context.User.FirstOrDefault(t => t.Username == username);
             return View(profile);
         }
@@ -274,9 +313,31 @@ namespace PRN292Prj.Areas.Admin.Controllers
             DataAccess data = new DataAccess(configuration);
             List<OrderDetails> orders = data.GetAllOrderDetails(id);
             ViewBag.OList = orders;
-            OrderDetails order = new OrderDetails();
-            order.ID = id;
-            return View(order);
+            ViewData["order_id"] = id;
+            return View();
+        }
+        [Route("UpdateProfile")]
+        public IActionResult UpdateProfile(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Profile", user);
+            }
+            var obj = _context.User.SingleOrDefault(t => t.Username.Equals(user.Username));
+            obj.Name = user.Name;
+            obj.Gender = user.Gender;
+            obj.Email = user.Email;
+            try
+            {
+                _context.SaveChanges();
+                TempData["UpdateS"] = "Update Success";
+                return RedirectToAction("Profile", obj);
+            }
+            catch (Exception)
+            {
+                TempData["UpdateF"] = "Update Fail";
+                return View("Profile", user);
+            }
         }
     }
 }

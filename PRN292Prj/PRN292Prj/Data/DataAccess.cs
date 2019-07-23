@@ -21,7 +21,7 @@ namespace PRN292Prj.Data
         public string CheckLogin(User user)
         {
             string role = "fail";
-            string connectionString = Configuration.GetConnectionString("Local");
+            string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_CheckLogin", conn);
             cmd.Parameters.AddWithValue("@Username", user.Username);
@@ -47,17 +47,12 @@ namespace PRN292Prj.Data
         }
         public bool InsertUser(User user)
         {
-            bool check = false;
+            bool check;
             string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("sp_insertUser", conn);
+            SqlCommand cmd = new SqlCommand("sp_InsertUser", conn);
             cmd.Parameters.AddWithValue("@Username", user.Username);
             cmd.Parameters.AddWithValue("@Password", user.Password);
-            cmd.Parameters.AddWithValue("@Email", user.Email);
-            cmd.Parameters.AddWithValue("@Name", user.Name);
-            cmd.Parameters.AddWithValue("@Gender", user.Gender);
-            cmd.Parameters.AddWithValue("@Role", user.Role);
-            cmd.Parameters.AddWithValue("@DateOfCreate", user.DOC);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
@@ -65,7 +60,7 @@ namespace PRN292Prj.Data
                 {
                     conn.Open();
                 }
-                cmd.ExecuteNonQuery();
+                check = cmd.ExecuteNonQuery() >0;
             }
             catch (Exception e)
             {
@@ -103,7 +98,7 @@ namespace PRN292Prj.Data
         }
         public bool InsertProduct(Product product)
         {
-            bool check = false;
+            bool check;
             string connectionString = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand("sp_InsertProduct", connection);
@@ -114,6 +109,7 @@ namespace PRN292Prj.Data
             cmd.Parameters.AddWithValue("@Scale_ID", product.Scale);
             cmd.Parameters.AddWithValue("@Release", product.Release);
             cmd.Parameters.AddWithValue("@Created", DateTime.Now);
+            cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
@@ -121,7 +117,7 @@ namespace PRN292Prj.Data
                 {
                     connection.Open();
                 }
-                cmd.ExecuteReader();
+                check = cmd.ExecuteNonQuery() > 0;
             }
             catch (Exception e)
             {
@@ -132,7 +128,7 @@ namespace PRN292Prj.Data
         public List<Product> GetAllProduct()
         {
             List<Product> list = new List<Product>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetAllProduct", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -170,7 +166,7 @@ namespace PRN292Prj.Data
         public List<Order> GetAllOrder()
         {
             List<Order> list = new List<Order>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetAllOrder", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -204,7 +200,7 @@ namespace PRN292Prj.Data
         public List<OrderDetails> GetAllOrderDetails(string order_id)
         {
             List<OrderDetails> list = new List<OrderDetails>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetAllOrderDetail", conn);
             cmd.Parameters.AddWithValue("@order_id", order_id);
@@ -237,7 +233,7 @@ namespace PRN292Prj.Data
         public List<User> GetAllUser()
         {
             List<User> list = new List<User>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetAllUser", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -254,7 +250,7 @@ namespace PRN292Prj.Data
                         string email = rd["email"].ToString();
                         string role = rd["role"].ToString();
                         bool gender = (bool)rd["gender"];
-                        DateTime date = Convert.ToDateTime(rd["dateofcreate"]);
+                        DateTime date = DateTime.Parse(rd["dateofcreate"].ToString());
                         User user = new User
                         {
                             Username = username,
@@ -321,7 +317,7 @@ namespace PRN292Prj.Data
         public Product SearchByPrimarykey(int id)
         {
             Product product = null;
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchByPrimarykey", conn);
             cmd.Parameters.AddWithValue("@id", id);
@@ -332,7 +328,7 @@ namespace PRN292Prj.Data
                 {
                     conn.Open();
                     var rd = cmd.ExecuteReader();
-                    while (rd.Read())
+                    if (rd.Read())
                     {
                         string name = rd["name"].ToString();
                         double price = Double.Parse(rd["price"].ToString());
@@ -349,6 +345,7 @@ namespace PRN292Prj.Data
                             Description = description,
                             Img = img,
                             Scale = scale,
+                            Quantity = quantity,
                             Release = release
                         };
                     }
@@ -373,6 +370,7 @@ namespace PRN292Prj.Data
             cmd.Parameters.AddWithValue("@Des", product.Description);
             cmd.Parameters.AddWithValue("@Scale_ID", product.Scale);
             cmd.Parameters.AddWithValue("@Release", product.Release);
+            cmd.Parameters.AddWithValue("@Quantity", product.Quantity);
             cmd.CommandType = CommandType.StoredProcedure;
             try
             {
@@ -430,7 +428,7 @@ namespace PRN292Prj.Data
         public List<UserIndexPage> SearchProductByUser(string search, string scale_id)
         {
             List<UserIndexPage> list = new List<UserIndexPage>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchProductByUser", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -472,7 +470,7 @@ namespace PRN292Prj.Data
         public List<User> SearchUserByName(string search)
         {
             List<User> list = new List<User>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchUser", conn);
             cmd.Parameters.AddWithValue("@Name", search);
@@ -513,7 +511,7 @@ namespace PRN292Prj.Data
         public List<UserIndexPage> SearchProductNewArrival()
         {
             List<UserIndexPage> list = new List<UserIndexPage>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchProductNewArrival", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -553,7 +551,7 @@ namespace PRN292Prj.Data
         public List<UserIndexPage> SearchProductBestSale()
         {
             List<UserIndexPage> list = new List<UserIndexPage>();
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_SearchProductBestSale", conn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -593,7 +591,7 @@ namespace PRN292Prj.Data
         public Product GetProductDetails(string id)
         {
             Product p = null;
-            string connStr = Configuration.GetConnectionString("Local");
+            string connStr = Configuration.GetConnectionString("PRN292PrjContext");
             SqlConnection conn = new SqlConnection(connStr);
             SqlCommand cmd = new SqlCommand("sp_GetProductDetails", conn);
             cmd.Parameters.AddWithValue("@id", id);

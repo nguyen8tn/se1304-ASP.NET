@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+
+}
+@model User
+<div class="page-area product-page spad">
+    <div class="container">
+        <h3>Profile</h3>
+        <br />
+        <form asp-action="Update" asp-controller="Users" method="post">
+            <div class="control-group">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Usename:</td>
+                            <td>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" asp-for="Username" value="@Html.Raw(Model.Username)" readonly />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Name:</td>
+                            <td>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" asp-for="Name" value="@Html.Raw(Model.Name)" />
+                                </div>
+                            </td>
+                            <td><font color="red"><span asp-validation-for="Name" class="text-danger"></span></font></td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" asp-for="Email" value="@Html.Raw(Model.Email)" />
+                                </div>
+                            </td>
+                            <td><font color="red"><span asp-validation-for="Email" class="text-danger"></span></font></td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td>
+                                <div class="controls">
+                                    Male   <input type="checkbox" asp-for="Gender" value="@Html.Raw(Model.Gender)" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Created Date:</td>
+                            <td>
+                                <div class="controls">
+                                    <input type="text" class="span6 m-wrap" asp-for="DOC" value="@Html.Raw(Model.DOC)" readonly />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </td>
+                        </tr>
+                        @if (TempData["UpdateS"] != null)
+                        {
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <font color="green">
+                                        @TempData["UpdateS"]
+                                    </font>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <font color="red">
+                                        @TempData["UpdateF"]
+                                    </font>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+

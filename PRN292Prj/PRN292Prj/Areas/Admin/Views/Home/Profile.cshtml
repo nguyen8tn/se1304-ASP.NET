@@ -3,7 +3,6 @@
     ViewData["Title"] = "Profile";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-@using Microsoft.AspNetCore.Http
 @model User
 <div class="span9" id="content">
     @{
@@ -20,14 +19,14 @@
         }
     }
     @{
-        if (TempData["UpdateS"] != null)
+        if (TempData["UpdateF"] != null)
         {
             <div class="row-fluid">
                 <div class="alert alert-error">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h4>Fail</h4>
                     <br />
-                    <h4>@TempData["UpdateS"]</h4>
+                    <h4>@TempData["UpdateF"]</h4>
                 </div>
             </div>
         }
@@ -46,32 +45,37 @@
                             <div class="control-group">
                                 <label class="control-label">Username</label>
                                 <div class="controls">
-                                    <span class="input-xlarge uneditable-input">@Context.Session.GetString("admin")</span>
+                                    <input class="input-xlarge uneditable-input" type="text" asp-for="Username" value="@Html.Raw(Model.Username)" readonly />
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="focusedInput">Name</label>
                                 <div class="controls">
-                                    <input class="input-xlarge focused" id="focusedInput" type="text" value="@Html.Raw(Model.Name)" asp-for="Name">
+                                    <input class="input-xlarge focused" id="focusedInput" type="text" value="@Html.Raw(Model.Name)" asp-for="Name" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="focusedInput">Email</label>
                                 <div class="controls">
-                                    <input class="input-xlarge focused" id="focusedInput" type="text" value="@Html.Raw(Model.Email)" asp-for="Email">
+                                    <input class="input-xlarge focused" id="focusedInput" type="text" value="@Html.Raw(Model.Email)" asp-for="Email" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label">Created Date</label>
                                 <div class="controls">
-                                    <span class="input-xlarge uneditable-input">@Html.Raw(Model.DOC)</span>
+                                    <input type="text" class="input-xlarge uneditable-input" asp-for="DOC" value="@Html.Raw(Model.DOC)" readonly />
+                                    <td><font color="red"><span asp-validation-for="Email" class="text-danger"></span></font></td>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <label class="control-label" for="focusedInput">Gender</label>
                                 <div class="controls">
-                                    <input class="input-xlarge focused" id="focusedInput" type="checkbox" value="@Html.Raw(Model.Gender)" asp-for="Gender">Male
+                                    Male    <input class="input-xlarge focused" id="focusedInput" type="checkbox" value="@Html.Raw(Model.Gender)" asp-for="Gender">
                                 </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="reset" class="btn" asp-action="Index" asp-area="Admin" asp-controller="Home">Cancel</button>
                             </div>
                         </fieldset>
                     </form>

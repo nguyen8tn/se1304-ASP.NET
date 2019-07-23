@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http;
+@using System.Security.Claims;
 @{
     Layout = null;
 }
@@ -32,11 +33,11 @@
                     <ul class="nav pull-right">
                         <li class="dropdown">
                             <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-user"></i>@Context.Session.GetString("name")<i class="caret"></i>
+                                <i class="icon-user"></i>@(User.FindFirst(ClaimTypes.NameIdentifier).Value)<i class="caret"></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a tabindex="-1" asp-action="Profile">Profile</a>
+                                    <a tabindex="-1" asp-action="Profile" asp-area="Admin" asp-controller="Home">Profile</a>
                                 </li>
                                 <li class="divider"></li>
                                 <li>
@@ -58,7 +59,7 @@
                         <a asp-area="Admin" asp-action="Index" asp-controller="Home"><i class="icon-chevron-right"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a asp-area="Admin" asp-action="CreateProduct" asp-controller="Home"><i class="icon-chevron-right"></i> Forms</a>
+                        <a asp-area="Admin" asp-action="CreateProduct" asp-controller="Home"><i class="icon-chevron-right"></i> Create Product</a>
                     </li>
                 </ul>
             </div>

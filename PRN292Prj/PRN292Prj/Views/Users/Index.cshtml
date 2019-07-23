@@ -4,8 +4,26 @@
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 @model UserIndexPage
-
-
+@section Search{
+    <div class="container">
+        <h3>Search</h3>
+        <form asp-action="Search">
+            <div class="control-group">
+                <div class="controls">
+                    <input type="text" class="span6 m-wrap" asp-for="Search" value="@Html.Raw(Model.Search)" />
+                </div>
+                <div class="controls">
+                    <select class="span6 m-wrap" asp-for="Scale" asp-items="@Model.ListScale">
+                        <option value="">Select...</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
 <section class="product-section spad">
     <div class="container">
         <ul class="product-filter controls">
@@ -31,7 +49,6 @@
                             <div class="product-info">
                                 <h6>@item.Name (@item.Scale)</h6>
                                 <p>@item.Price$</p>
-                                <a href="#" class="site-btn btn-line">ADD TO CART</a>
                             </div>
                         </div>
                     </div>
